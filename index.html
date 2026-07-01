@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BMS — Border Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#eef2f7;--bg-card:#ffffff;--bg-hover:#f1f5f9;--sidebar:#ffffff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--accent:#0284c7;--accent-dim:rgba(2,132,199,.10);--teal:#0d9488;--success:#059669;--warning:#d97706;--danger:#dc2626;--purple:#7c3aed;--radius:12px;--shadow:0 6px 24px rgba(15,23,42,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--bg);background-image:radial-gradient(ellipse 80% 60% at 10% 20%,rgba(14,165,233,.12),transparent),radial-gradient(ellipse 60% 50% at 90% 80%,rgba(20,184,166,.1),transparent),radial-gradient(ellipse 50% 40% at 50% 50%,rgba(139,92,246,.06),transparent);color:var(--text);min-height:100vh;display:flex;overflow:hidden}
+.sidebar{width:268px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow:hidden;transition:transform .3s;z-index:200}
+.brand{padding:1.35rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.85rem;background:linear-gradient(180deg,rgba(14,165,233,.06),transparent)}
+.brand-icon{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#0d9488);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;box-shadow:0 4px 16px rgba(14,165,233,.3);letter-spacing:-.02em}
+.brand-text{flex:1;min-width:0}
+.brand h1{font-size:1.05rem;font-weight:700;line-height:1.2;letter-spacing:-.02em}
+.brand p{font-size:.68rem;color:var(--muted);margin-top:3px}
+.brand-tag{font-size:.6rem;background:var(--accent-dim);color:var(--accent);padding:.15rem .45rem;border-radius:4px;font-weight:600;margin-top:.35rem;display:inline-block}
+.nav-scroll{flex:1;overflow-y:auto;padding:.75rem 0}
+.nav-group{margin-bottom:.5rem}
+.nav-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.5rem 1rem .35rem}
+.nav-item{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;margin:0 .5rem;border-radius:8px;color:var(--muted);cursor:pointer;font-size:.875rem;font-weight:500;border:none;background:none;width:calc(100% - 1rem);text-align:left;transition:background .2s,color .2s,transform .15s}
+.nav-item:hover{background:var(--bg-hover);color:var(--text);transform:translateX(2px)}
+.nav-item.active{background:var(--accent-dim);color:var(--accent);font-weight:600}
+.nav-item .ico{width:20px;text-align:center;font-size:1rem;flex-shrink:0}
+.nav-item .nav-label-text{flex:1;text-align:left}
+.nav-badge{margin-left:auto;background:var(--bg-hover);color:var(--muted);font-size:.65rem;font-weight:700;padding:.15rem .45rem;border-radius:10px;min-width:22px;text-align:center}
+.nav-item.active .nav-badge{background:rgba(14,165,233,.25);color:var(--accent)}
+.nav-badge.hot{background:rgba(239,68,68,.15);color:var(--danger)}
+.sidebar-foot{padding:1rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted)}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;height:100vh}
+.topbar{height:64px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);flex-shrink:0;gap:1rem}
+.topbar-left{display:flex;align-items:center;gap:1rem;min-width:0}
+.hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.4rem .6rem;cursor:pointer;font-size:1.1rem;transition:border-color .2s}
+.hamburger:hover{border-color:var(--accent)}
+.breadcrumb{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+.breadcrumb span{color:var(--text);font-weight:600}
+.breadcrumb .sep{opacity:.4}
+.topbar h2{font-size:1.1rem;font-weight:600;display:none}
+.topbar-actions{display:flex;align-items:center;gap:.5rem}
+.topbar-meta{display:flex;align-items:center;gap:1rem;font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:#0284c7;transform:translateY(-1px);box-shadow:0 4px 12px rgba(14,165,233,.3)}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.btn-sm{padding:.35rem .7rem;font-size:.75rem}
+.badge-live{background:rgba(16,185,129,.15);color:var(--success);padding:.2rem .6rem;border-radius:20px;font-size:.7rem;font-weight:600}
+.user-pill{display:flex;align-items:center;gap:.5rem;background:var(--bg-hover);padding:.35rem .75rem;border-radius:20px}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--accent));display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.content{flex:1;overflow-y:auto;padding:1.5rem}
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,#0c4a6e 0%,#111a2e 50%,#134e4a 100%);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem 2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;transition:box-shadow .3s}
+.hero:hover{box-shadow:var(--shadow)}
+.hero::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(14,165,233,.2),transparent 70%);pointer-events:none}
+.hero-eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.6rem;display:inline-block;background:rgba(14,165,233,.12);padding:.25rem .65rem;border-radius:4px}
+.hero h3{font-size:1.55rem;margin-bottom:.5rem;font-weight:700;letter-spacing:-.02em;color:#fff}
+.hero p{color:rgba(255,255,255,.85);max-width:780px;line-height:1.65;font-size:.9rem;margin-bottom:1rem}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.5rem}
+.hero-pill{font-size:.75rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:.35rem .75rem;border-radius:20px;color:var(--text)}
+.hero-pill strong{color:var(--accent);margin-right:.25rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem;align-items:center}
+.toolbar .search-fake{flex:1;min-width:180px;max-width:320px;padding:.5rem .85rem;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.detail-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;transition:border-color .2s,transform .2s}
+.detail-block:hover{border-color:rgba(14,165,233,.4);transform:translateY(-2px)}
+.detail-block h5{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.detail-block p{font-size:.85rem;line-height:1.5}
+.detail-block .val{font-size:1.1rem;font-weight:700;color:var(--text)}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:1rem;max-height:340px;overflow-y:auto}
+.table-wrap .data-table{margin:0}
+.table-wrap .data-table thead{position:sticky;top:0;z-index:1}
+.progress-row{margin-bottom:.85rem}
+.progress-row .pr-head{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.35rem}
+.progress-bar{height:8px;background:var(--bg-hover);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--teal));transition:width .5s}
+.kpi-card{display:flex;gap:1rem;align-items:flex-start}
+.kpi-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;background:var(--accent-dim)}
+.kpi-card.teal .kpi-icon{background:rgba(20,184,166,.15)}
+.kpi-card.success .kpi-icon{background:rgba(16,185,129,.15)}
+.kpi-card.warning .kpi-icon{background:rgba(245,158,11,.15)}
+.kpi-card.danger .kpi-icon{background:rgba(239,68,68,.15)}
+.kpi-body{flex:1;min-width:0}
+.kpi-trend{font-size:.75rem;font-weight:600;margin-top:.25rem}
+.kpi-trend.up{color:var(--success)}
+.kpi-trend.down{color:var(--danger)}
+.kpi-trend.neutral{color:var(--muted)}
+.perm-matrix{font-size:.8rem}
+.perm-matrix th,.perm-matrix td{text-align:center;padding:.55rem .4rem}
+.perm-matrix td.yes{color:var(--success);font-weight:700}
+.perm-matrix td.no{color:var(--muted);opacity:.5}
+.id-card{position:relative;overflow:hidden}
+.id-stripe{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(-45deg,#f59e0b,#f59e0b 8px,#111 8px,#111 16px,#0ea5e9 16px,#0ea5e9 24px)}
+.id-card .id-body{padding-top:.5rem}
+.chat-list{display:flex;flex-direction:column;gap:.75rem;max-height:380px;overflow-y:auto}
+.chat-msg{display:flex;gap:.75rem;align-items:flex-start}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg-hover);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.chat-bubble{flex:1;background:var(--bg-hover);border:1px solid var(--border);border-radius:12px;border-top-left-radius:4px;padding:.75rem 1rem}
+.chat-bubble .chat-meta{font-size:.7rem;color:var(--muted);margin-bottom:.35rem;display:flex;justify-content:space-between;gap:.5rem}
+.chat-bubble p{font-size:.85rem;line-height:1.5}
+.chat-msg.outgoing{flex-direction:row-reverse}
+.chat-msg.outgoing .chat-bubble{border-top-left-radius:12px;border-top-right-radius:4px;background:var(--accent-dim);border-color:rgba(14,165,233,.3)}
+.map-routes{position:absolute;inset:0;pointer-events:none}
+.map-route{position:absolute;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform-origin:left center;opacity:.6}
+.map-route.active{background:linear-gradient(90deg,var(--warning),var(--accent));opacity:.9;box-shadow:0 0 8px var(--warning)}
+.thumb-col{width:48px;height:36px;background:var(--bg-hover);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1px solid var(--border)}
+.feature-card{transition:border-color .2s,background .2s,transform .2s,box-shadow .2s}
+.feature-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+@media(max-width:900px){
+.detail-grid{grid-template-columns:1fr}
+}
+.section-title{font-size:1rem;font-weight:600;margin:1.5rem 0 .75rem;color:var(--text)}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.kpi-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent)}
+.kpi-card.teal::before{background:var(--teal)}
+.kpi-card.success::before{background:var(--success)}
+.kpi-card.warning::before{background:var(--warning)}
+.kpi-card.danger::before{background:var(--danger)}
+.kpi-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem}
+.kpi-value{font-size:1.75rem;font-weight:700}
+.kpi-sub{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem}
+.feature-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.feature-card:hover{border-color:var(--accent);background:var(--bg-hover)}
+.feature-card .fc-icon{font-size:1.5rem;margin-bottom:.5rem}
+.feature-card h4{font-size:.9rem;margin-bottom:.35rem}
+.feature-card p{font-size:.8rem;color:var(--muted);line-height:1.5}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.card-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.card-box h4{font-size:.95rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.data-table th{text-align:left;padding:.65rem .75rem;background:var(--bg-hover);color:var(--muted);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.data-table td{padding:.65rem .75rem;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:rgba(14,165,233,.04)}
+.badge{display:inline-block;padding:.2rem .55rem;border-radius:20px;font-size:.7rem;font-weight:600}
+.badge.success{background:rgba(16,185,129,.15);color:var(--success)}
+.badge.warning{background:rgba(245,158,11,.15);color:var(--warning)}
+.badge.danger{background:rgba(239,68,68,.15);color:var(--danger)}
+.badge.info{background:rgba(14,165,233,.15);color:var(--accent)}
+.badge.purple{background:rgba(139,92,246,.15);color:var(--purple)}
+.chart-area{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;min-height:220px}
+.chart-bars{display:flex;align-items:flex-end;gap:.75rem;height:160px;padding-top:1rem}
+.chart-bar{flex:1;background:linear-gradient(180deg,var(--accent),#0369a1);border-radius:6px 6px 0 0;min-height:20px;position:relative}
+.chart-bar span{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--muted);white-space:nowrap}
+.chart-bar .val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:.7rem;font-weight:600;color:var(--accent)}
+.workflow-steps{display:flex;gap:0;margin:1.5rem 0;overflow-x:auto;padding-bottom:.5rem}
+.wf-step{flex:1;min-width:100px;text-align:center;position:relative}
+.wf-step:not(:last-child)::after{content:'';position:absolute;top:20px;right:-50%;width:100%;height:2px;background:var(--border);z-index:0}
+.wf-num{width:40px;height:40px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;margin:0 auto .5rem;position:relative;z-index:1}
+.wf-step.done .wf-num{background:var(--success);border-color:var(--success);color:#fff}
+.wf-step p{font-size:.7rem;color:var(--muted);padding:0 .25rem}
+.workflow-vertical{display:flex;flex-direction:column;gap:0;margin:1rem 0}
+.wf-vstep{display:flex;gap:1rem;align-items:flex-start}
+.wf-vline{width:2px;background:var(--border);margin-left:19px;min-height:24px}
+.wf-vstep .wf-num{flex-shrink:0;margin:0}
+.wf-vbody{padding-bottom:1rem}
+.wf-vbody h5{font-size:.85rem;margin-bottom:.2rem}
+.wf-vbody p{font-size:.78rem;color:var(--muted)}
+.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--border);margin-bottom:1rem;flex-wrap:wrap}
+.tab-btn{padding:.6rem 1rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.id-card{background:linear-gradient(135deg,#1e3a5f,#0f172a);border:2px solid var(--accent);border-radius:12px;padding:1.25rem;max-width:340px;color:#e8edf5}
+.id-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.id-card-header .flag{font-size:.7rem;color:var(--muted)}
+.id-photo{width:70px;height:85px;background:var(--bg-hover);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:.75rem}
+.id-card h5{font-size:1rem;margin-bottom:.15rem}
+.id-card .id-field{font-size:.75rem;color:rgba(255,255,255,.72);margin-bottom:.2rem}
+.qr-box{width:80px;height:80px;background:#fff;border-radius:6px;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px;margin-top:.75rem}
+.qr-box span{background:#111;border-radius:1px}
+.map-placeholder{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);height:280px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:1rem}
+.map-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(148,163,184,.3) 39px,rgba(148,163,184,.3) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(148,163,184,.3) 39px,rgba(148,163,184,.3) 40px)}
+.map-dot{position:absolute;width:12px;height:12px;background:var(--accent);border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px var(--accent)}
+.map-label{position:absolute;font-size:.65rem;background:rgba(0,0,0,.7);color:#fff;padding:.15rem .4rem;border-radius:4px}
+.alert-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.alert-btn{padding:1rem 1.5rem;border:none;border-radius:var(--radius);font-weight:700;font-size:.9rem;cursor:pointer;color:#fff;transition:.15s}
+.alert-btn:hover{transform:scale(1.03)}
+.alert-btn.panic{background:var(--danger)}
+.alert-btn.security{background:var(--warning);color:#111}
+.alert-btn.medical{background:var(--success)}
+.bio-scanner{background:var(--bg-card);border:2px dashed var(--border);border-radius:var(--radius);padding:2rem;text-align:center;margin-bottom:1rem}
+.bio-scanner .scan-icon{font-size:3rem;margin-bottom:.5rem}
+.form-preview label{display:block;font-size:.75rem;color:var(--muted);margin-bottom:.25rem}
+.form-preview input,.form-preview select,.form-preview textarea{width:100%;padding:.5rem .75rem;background:var(--bg-hover);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.85rem;margin-bottom:.75rem}
+.list-check{list-style:none}
+.list-check li{padding:.4rem 0 .4rem 1.5rem;position:relative;font-size:.85rem;color:var(--muted)}
+.list-check li::before{content:'\2713';position:absolute;left:0;color:var(--success);font-weight:700}
+.stat-row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.stat-row:last-child{border-bottom:none}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150}
+.overlay.open{display:block}
+@media(max-width:900px){
+.sidebar{position:fixed;left:0;top:0;transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.hamburger{display:block}
+.two-col{grid-template-columns:1fr}
+.overlay.open{display:block}
+}
+/* light-theme refinements */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+.sidebar{box-shadow:1px 0 0 var(--border)}
+.kpi-card,.card-box,.feature-card,.detail-block,.chart-area{box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.data-table tr:hover td{background:rgba(2,132,199,.05)}
+.hero-eyebrow{color:#7dd3fc;background:rgba(255,255,255,.14)}
+.hero-pill strong{color:#7dd3fc}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+<div class="brand"><div class="brand-icon">BMS</div><div class="brand-text"><h1>Border Management</h1><p>Somalia · National Platform</p><span class="brand-tag">Gov Secure Portal v2.4</span></div></div>
+<nav class="nav-scroll" id="nav"></nav>
+<div class="sidebar-foot">Secure · Encrypted · RBAC v2.4</div>
+</aside>
+<div class="overlay" id="overlay"></div>
+<div class="main">
+<header class="topbar">
+<div class="topbar-left">
+<button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+<nav class="breadcrumb" id="breadcrumb"><span>BMS</span><span class="sep">/</span><span id="bcSection">Overview</span><span class="sep">/</span><span id="bcPage">Dashboard</span></nav>
+<h2 id="pageTitle">Dashboard</h2>
+</div>
+<div class="topbar-actions">
+<button class="btn btn-outline btn-sm" onclick="alert('Global search — demo')">🔍 Search</button>
+<button class="btn btn-primary btn-sm" onclick="alert('Export initiated — demo')">⬇ Export</button>
+</div>
+<div class="topbar-meta"><span class="badge-live">● System Online</span><span id="clock"></span><div class="user-pill"><div class="user-avatar">SA</div><span>Super Admin</span></div></div>
+</header>
+<main class="content" id="content"><!-- PANELS START -->
+<div class="panel active" id="panel-dashboard">
+<div class="hero"><div class="hero-eyebrow">National Operations</div><h3>National Border Operations Dashboard</h3><p>Real-time overview of border crossings, traveler registrations, and vehicle movements across Somalia's checkpoints — Mogadishu, Hargeisa, Kismayo, and inter-city corridors.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>4,287</strong> Travelers Today</span><span class="hero-pill"><strong>17</strong> Flagged Items</span><span class="hero-pill"><strong>99.7%</strong> System Uptime</span><span class="hero-pill"><strong>12</strong> Active Cities</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search crossings, plates, permits…</div><button class="btn btn-outline btn-sm">Filter</button><button class="btn btn-outline btn-sm">Today</button><button class="btn btn-primary btn-sm">Refresh Data</button></div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-icon">🧳</div><div class="kpi-body"><div class="kpi-label">Travelers Today</div><div class="kpi-value">4,287</div><div class="kpi-trend up">↑ 12% vs yesterday</div></div></div>
+<div class="kpi-card teal"><div class="kpi-icon">🚗</div><div class="kpi-body"><div class="kpi-label">Vehicles Registered</div><div class="kpi-value">1,842</div><div class="kpi-trend neutral">342 in transit</div></div></div>
+<div class="kpi-card success"><div class="kpi-icon">🛣️</div><div class="kpi-body"><div class="kpi-label">Trips Today</div><div class="kpi-value">956</div><div class="kpi-trend up">↑ 8% inter-city</div></div></div>
+<div class="kpi-card warning"><div class="kpi-icon">🛂</div><div class="kpi-body"><div class="kpi-label">Border Crossings</div><div class="kpi-value">2,134</div><div class="kpi-trend down">↓ 3 flagged</div></div></div>
+<div class="kpi-card danger"><div class="kpi-icon">⚠️</div><div class="kpi-body"><div class="kpi-label">Flagged Items</div><div class="kpi-value">17</div><div class="kpi-trend down">5 urgent review</div></div></div>
+</div>
+<div class="detail-grid">
+<div class="detail-block"><h5>System Performance</h5><p class="val">98.4%</p><p>API response SLA met across all checkpoints</p></div>
+<div class="detail-block"><h5>Biometric Match Rate</h5><p class="val">99.2%</p><p>NIRA database sync — last update 14:30 EAT</p></div>
+<div class="detail-block"><h5>Active Checkpoints</h5><p class="val">47 / 48</p><p>Garowe Hub — scheduled maintenance 16:00</p></div>
+</div>
+<div class="two-col">
+<div class="chart-area"><h4 style="margin-bottom:1rem;font-size:.95rem">Hourly Crossing Volume — Today</h4><div class="chart-bars"><div class="chart-bar" style="height:45%"><span>06:00</span><span class="val">186</span></div><div class="chart-bar" style="height:62%"><span>08:00</span><span class="val">254</span></div><div class="chart-bar" style="height:78%"><span>10:00</span><span class="val">321</span></div><div class="chart-bar" style="height:95%"><span>12:00</span><span class="val">389</span></div><div class="chart-bar" style="height:70%"><span>14:00</span><span class="val">287</span></div><div class="chart-bar" style="height:55%"><span>16:00</span><span class="val">224</span></div><div class="chart-bar" style="height:40%"><span>18:00</span><span class="val">163</span></div></div></div>
+<div class="chart-area"><h4 style="margin-bottom:1rem;font-size:.95rem">Travel Trends — 7 Day</h4><div class="chart-bars"><div class="chart-bar" style="height:55%;background:linear-gradient(180deg,#14b8a6,#0d9488)"><span>Mon</span><span class="val">3.8K</span></div><div class="chart-bar" style="height:62%"><span>Tue</span><span class="val">4.1K</span></div><div class="chart-bar" style="height:70%"><span>Wed</span><span class="val">4.3K</span></div><div class="chart-bar" style="height:68%"><span>Thu</span><span class="val">4.2K</span></div><div class="chart-bar" style="height:75%"><span>Fri</span><span class="val">4.5K</span></div><div class="chart-bar" style="height:58%;background:linear-gradient(180deg,#8b5cf6,#6d28d9)"><span>Sat</span><span class="val">3.9K</span></div><div class="chart-bar" style="height:48%"><span>Sun</span><span class="val">3.2K</span></div></div></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>Checkpoint Capacity</h4>
+<div class="progress-row"><div class="pr-head"><span>Mogadishu Airport (MGQ)</span><span>82%</span></div><div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div></div>
+<div class="progress-row"><div class="pr-head"><span>Hargeisa Border Gate</span><span>67%</span></div><div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div></div>
+<div class="progress-row"><div class="pr-head"><span>Kismayo Port</span><span>54%</span></div><div class="progress-bar"><div class="progress-fill" style="width:54%"></div></div></div>
+<div class="progress-row"><div class="pr-head"><span>Bosaso Corridor</span><span>41%</span></div><div class="progress-bar"><div class="progress-fill" style="width:41%"></div></div></div>
+</div>
+<div class="card-box"><h4>Top Border Checkpoints</h4>
+<div class="stat-row"><span>Mogadishu Airport (MGQ)</span><strong>1,024</strong></div>
+<div class="stat-row"><span>Hargeisa Border Gate</span><strong>687</strong></div>
+<div class="stat-row"><span>Kismayo Port Checkpoint</span><strong>412</strong></div>
+<div class="stat-row"><span>Bosaso Corridor</span><strong>298</strong></div>
+<div class="stat-row"><span>Garowe Transit Hub</span><strong>245</strong></div>
+</div>
+</div>
+<div class="card-box"><h4>Recent Activity</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Time</th><th>Event</th><th>Location</th><th>Status</th></tr></thead><tbody>
+<tr><td>14:32</td><td>Passenger cleared — Ahmed M. Hassan</td><td>Mogadishu MGQ</td><td><span class="badge success">Cleared</span></td></tr>
+<tr><td>14:28</td><td>Vehicle transit started — Plate SO-4521</td><td>Hargeisa → Garowe</td><td><span class="badge info">In Transit</span></td></tr>
+<tr><td>14:15</td><td>Biometric duplicate flag raised</td><td>Kismayo Port</td><td><span class="badge warning">Review</span></td></tr>
+<tr><td>14:02</td><td>Driver card verified — QR scan</td><td>Bosaso Checkpoint</td><td><span class="badge success">Verified</span></td></tr>
+<tr><td>13:48</td><td>Blacklist match — watchlist alert</td><td>Mogadishu Corridor</td><td><span class="badge danger">Blocked</span></td></tr>
+<tr><td>13:30</td><td>Travel permit DTP-04821 issued</td><td>MGQ Gate A</td><td><span class="badge success">Issued</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-overview">
+<div class="hero"><div class="hero-eyebrow">Platform Architecture</div><h3>System Overview</h3><p>The Somalia Border Management System (BMS) is a unified national platform for secure passenger registration, vehicle tracking, biometric verification, and inter-agency coordination at all border and transit checkpoints.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>4.2M</strong> NIRA Records</span><span class="hero-pill"><strong>48</strong> Checkpoints</span><span class="hero-pill"><strong>AES-256</strong> Encryption</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search documentation…</div><button class="btn btn-outline btn-sm">Architecture</button><button class="btn btn-outline btn-sm">Security</button></div>
+<div class="two-col">
+<div><h4 class="section-title">System Objectives</h4><ul class="list-check">
+<li>Centralize all border crossing data across federal states and checkpoints</li>
+<li>Enable real-time vehicle and passenger tracking with GPS integration</li>
+<li>Integrate biometric identity verification with NIRA national database</li>
+<li>Support multi-level admin workflows (City Admin, Super Admin, Officers)</li>
+<li>Provide immutable audit trails for security and regulatory compliance</li>
+<li>Enable digital travel permits and driver credential management</li>
+<li>Automate inter-city vehicle notifications to destination cities</li>
+<li>Deliver multi-channel alerts (SMS, WhatsApp, Email, in-app)</li>
+<li>Support emergency response coordination across agencies</li>
+</ul></div>
+<div><h4 class="section-title">Key Benefits</h4><ul class="list-check">
+<li>Reduced border wait times through pre-registration and QR clearance</li>
+<li>Automated duplicate and blacklist detection at every checkpoint</li>
+<li>GPS-based inter-city vehicle monitoring with ETA predictions</li>
+<li>Unified reporting for federal, state, and city authorities</li>
+<li>Role-based access ensuring data privacy and least-privilege</li>
+<li>Cloud-hosted central database with automated daily backups</li>
+<li>Incident management with photo evidence and escalation paths</li>
+<li>Driver card and official ID lifecycle management</li>
+</ul></div>
+</div>
+<h4 class="section-title">Secure Platform Features</h4>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">👆</div><h4>Biometric Verification</h4><p>Fingerprint and facial recognition matched against 4.2M NIRA records with liveness detection.</p></div>
+<div class="feature-card"><div class="fc-icon">🔐</div><h4>End-to-End Encryption</h4><p>All PII and biometric data encrypted at rest and in transit using AES-256.</p></div>
+<div class="feature-card"><div class="fc-icon">👤</div><h4>Role-Based Access Control</h4><p>Granular RBAC for Super Admin, City Admin, Border Officers, and Security agencies.</p></div>
+<div class="feature-card"><div class="fc-icon">📋</div><h4>Immutable Audit Logs</h4><p>Every action logged with timestamp, user ID, checkpoint, and IP address.</p></div>
+<div class="feature-card"><div class="fc-icon">☁️</div><h4>Cloud Central Database</h4><p>Redundant cloud infrastructure with 99.9% SLA and geo-replication.</p></div>
+<div class="feature-card"><div class="fc-icon">💾</div><h4>Automated Backup</h4><p>Hourly incremental and daily full backups with 90-day retention.</p></div>
+</div>
+<h4 class="section-title">Multi-Level Access Control — Permissions Matrix</h4>
+<div class="table-wrap"><table class="data-table perm-matrix"><thead><tr><th style="text-align:left">Permission</th><th>Super Admin</th><th>City Admin</th><th>Border Officer</th></tr></thead><tbody>
+<tr><td style="text-align:left">User Management (create/edit/delete)</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">System Configuration</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">National Approval Queue</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Security Monitoring Dashboard</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Database Management</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Review City Applications</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Verify Documents</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+<tr><td style="text-align:left">Approve Initial Registration</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Forward to Super Admin</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Passenger/Vehicle Registration</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+<tr><td style="text-align:left">Biometric Capture</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+<tr><td style="text-align:left">Blacklist Management</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td style="text-align:left">Incident Reporting</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+<tr><td style="text-align:left">Emergency Alert Trigger</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+<tr><td style="text-align:left">Generate Reports</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="panel" id="panel-passenger">
+<div class="hero"><div class="hero-eyebrow">Traveler Management</div><h3>Passenger Registration</h3><p>Register and manage travelers entering or transiting through Somalia's borders. Supports NIRA ID linkage, biometric capture, travel history, and digital travel permit issuance with QR codes.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>48,210</strong> Total Registered</span><span class="hero-pill"><strong>142</strong> Pending Bio</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search by name, NIRA ID, passport…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-outline btn-sm">Checkpoint</button><button class="btn btn-primary btn-sm">+ New Registration</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">📝</div><h4>New Registration</h4><p>Capture personal info, passport/NIRA ID, travel purpose, and destination.</p></div>
+<div class="feature-card"><div class="fc-icon">👆</div><h4>Biometric Capture</h4><p>Fingerprint and facial scan integrated with NIRA verification.</p></div>
+<div class="feature-card"><div class="fc-icon">🔍</div><h4>Search &amp; Lookup</h4><p>Find passengers by ID, name, or biometric reference number.</p></div>
+<div class="feature-card"><div class="fc-icon">📱</div><h4>QR Code Generation</h4><p>Auto-generate QR on approval for checkpoint scanning and clearance.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box form-preview"><h4>Personal Information — Preview Form</h4>
+<label>Full Name</label><input type="text" value="Fadumo Abdi Ali" readonly/>
+<label>Date of Birth</label><input type="text" value="1992-04-15" readonly/>
+<label>Nationality</label><input type="text" value="Somali" readonly/>
+<label>NIRA / Passport ID</label><input type="text" value="SO-NIRA-882104" readonly/>
+<label>Phone Number</label><input type="text" value="+252 61 234 5678" readonly/>
+<label>Travel Purpose</label><select><option>Business</option><option selected>Family Visit</option><option>Medical</option><option>Education</option><option>Diplomatic</option><option>Transit</option></select>
+<label>Origin → Destination</label><input type="text" value="Nairobi → Mogadishu" readonly/>
+<label>Biometric Status</label><input type="text" value="✓ Fingerprint + Face captured" readonly/>
+</div>
+<div class="card-box"><h4>Travel History — Fadumo Abdi Ali</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Route</th><th>Checkpoint</th><th>Permit ID</th><th>Status</th></tr></thead><tbody>
+<tr><td>2026-07-01</td><td>Nairobi → Mogadishu</td><td>MGQ Airport</td><td>DTP-2026-04821</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>2025-12-14</td><td>Mogadishu → Hargeisa</td><td>MGQ Gate B</td><td>DTP-2025-12440</td><td><span class="badge info">Archived</span></td></tr>
+<tr><td>2025-08-02</td><td>Djibouti → Mogadishu</td><td>MGQ Airport</td><td>DTP-2025-08201</td><td><span class="badge info">Archived</span></td></tr>
+</tbody></table></div>
+<p style="font-size:.8rem;color:var(--muted);margin-top:.75rem"><strong>QR Note:</strong> Upon clearance, a unique QR code is generated linking to permit ID, biometric hash, and expiry date for instant checkpoint verification.</p>
+</div>
+</div>
+<div class="card-box"><h4>Recent Registrations</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Reg ID</th><th>Name</th><th>NIRA/Passport</th><th>Purpose</th><th>Origin → Destination</th><th>Checkpoint</th><th>Status</th></tr></thead><tbody>
+<tr><td>PR-2026-04821</td><td>Fadumo Abdi Ali</td><td>SO-NIRA-882104</td><td>Family Visit</td><td>Nairobi → Mogadishu</td><td>MGQ Airport</td><td><span class="badge success">Cleared</span></td></tr>
+<tr><td>PR-2026-04820</td><td>Mohamed Yusuf Omar</td><td>P SO0123456</td><td>Business</td><td>Djibouti → Hargeisa</td><td>Hargeisa Gate</td><td><span class="badge success">Cleared</span></td></tr>
+<tr><td>PR-2026-04819</td><td>Amina Hassan Farah</td><td>SO-NIRA-771203</td><td>Medical</td><td>Kismayo → Mogadishu</td><td>Kismayo Port</td><td><span class="badge warning">Pending Bio</span></td></tr>
+<tr><td>PR-2026-04818</td><td>Abdirizak Jama Idle</td><td>P SO0987654</td><td>Transit</td><td>Garowe → Bosaso</td><td>Garowe Hub</td><td><span class="badge info">In Review</span></td></tr>
+<tr><td>PR-2026-04817</td><td>Hawa Mohamed Ali</td><td>SO-NIRA-661902</td><td>Education</td><td>Mogadishu → Hargeisa</td><td>MGQ Gate A</td><td><span class="badge success">Cleared</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-vehicle">
+<div class="hero"><div class="hero-eyebrow">Fleet Management</div><h3>Vehicle Management</h3><p>Register, verify, track, and manage all vehicles crossing borders and traveling between Somali cities. Linked to driver credentials, passenger assignments, and transit permits.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>1,842</strong> Registered</span><span class="hero-pill"><strong>342</strong> In Transit</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search plate, VIN, owner…</div><button class="btn btn-outline btn-sm">Type</button><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Register Vehicle</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🚗</div><h4>Vehicle Registration</h4><p>Register plate, VIN, type, owner, and insurance details.</p></div>
+<div class="feature-card"><div class="fc-icon">✅</div><h4>Vehicle Verification</h4><p>Validate registration, insurance, and inspection certificates.</p></div>
+<div class="feature-card"><div class="fc-icon">📜</div><h4>Vehicle History</h4><p>Full transit log, incidents, and ownership change records.</p></div>
+<div class="feature-card"><div class="fc-icon">👥</div><h4>Passenger Assignment</h4><p>Link registered passengers to vehicle manifest for inter-city trips.</p></div>
+<div class="feature-card"><div class="fc-icon">🔗</div><h4>Driver Linking</h4><p>Associate authorized drivers with vehicle records and cards.</p></div>
+<div class="feature-card"><div class="fc-icon">⚠️</div><h4>Status Management</h4><p>Flag vehicles as active, suspended, or blacklisted.</p></div>
+</div>
+<div class="detail-grid">
+<div class="detail-block"><h5>Verification Queue</h5><p class="val">23</p><p>Vehicles pending document verification</p></div>
+<div class="detail-block"><h5>Inspection Due</h5><p class="val">18</p><p>Require safety inspection within 7 days</p></div>
+<div class="detail-block"><h5>Blacklisted</h5><p class="val">7</p><p>Blocked from border crossing</p></div>
+</div>
+<div class="card-box"><h4>Registered Vehicles</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Plate</th><th>Type</th><th>Owner</th><th>Driver</th><th>Passengers</th><th>Route</th><th>Verified</th><th>Status</th></tr></thead><tbody>
+<tr><td>SO-MG-4521</td><td>Bus (45 seats)</td><td>Dahabshiil Transport</td><td>Hassan M. Abdi</td><td>38 / 45</td><td>Mogadishu → Kismayo</td><td><span class="badge success">Yes</span></td><td><span class="badge info">In Transit</span></td></tr>
+<tr><td>SO-HG-8834</td><td>Truck (Cargo)</td><td>Berbera Logistics</td><td>Omar A. Jama</td><td>—</td><td>Hargeisa → Bosaso</td><td><span class="badge success">Yes</span></td><td><span class="badge success">Active</span></td></tr>
+<tr><td>SO-KM-2290</td><td>Minibus</td><td>Kismayo Express</td><td>Fatima S. Ali</td><td>12 / 18</td><td>Kismayo → Garowe</td><td><span class="badge warning">Pending</span></td><td><span class="badge warning">Inspection Due</span></td></tr>
+<tr><td>SO-BS-1102</td><td>Private Car</td><td>Private</td><td>Abdi K. Nur</td><td>3 / 5</td><td>Bosaso → Garowe</td><td><span class="badge danger">Expired</span></td><td><span class="badge danger">Suspended</span></td></tr>
+<tr><td>SO-GR-7745</td><td>Bus (30 seats)</td><td>Puntland Transit</td><td>Yusuf H. Mohamed</td><td>28 / 30</td><td>Garowe → Hargeisa</td><td><span class="badge success">Yes</span></td><td><span class="badge success">Active</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-city-admin">
+<div class="hero"><div class="hero-eyebrow">City-Level Administration</div><h3>City Admin Portal</h3><p>City-level administration for Mogadishu, Hargeisa, Kismayo, Garowe, and Bosaso. Review applications, verify documents, approve registrations, monitor activities, and forward cases to Super Admin.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>34</strong> Pending Reviews</span><span class="hero-pill"><strong>5</strong> Cities Active</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search applications, officers…</div><button class="btn btn-outline btn-sm">City: Mogadishu</button><button class="btn btn-outline btn-sm">Urgent</button><button class="btn btn-primary btn-sm">Review Queue</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">📥</div><h4>Review Applications</h4><p>Process flagged passenger, vehicle, and driver registrations.</p></div>
+<div class="feature-card"><div class="fc-icon">📄</div><h4>Verify Documents</h4><p>Validate NIRA IDs, passports, licenses, and insurance papers.</p></div>
+<div class="feature-card"><div class="fc-icon">✅</div><h4>Approve Initial Registration</h4><p>Grant clearance for standard registrations at city level.</p></div>
+<div class="feature-card"><div class="fc-icon">📊</div><h4>Monitor City Activities</h4><p>Real-time dashboard of crossings, incidents, and officer activity.</p></div>
+<div class="feature-card"><div class="fc-icon">⬆️</div><h4>Forward to Super Admin</h4><p>Escalate complex cases requiring national-level approval.</p></div>
+<div class="feature-card"><div class="fc-icon">👮</div><h4>Officer Management</h4><p>Assign and monitor checkpoint officers in your city.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>Pending Review Queue — Mogadishu</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Ref</th><th>Type</th><th>Subject</th><th>Reason</th><th>Submitted</th><th>Action</th></tr></thead><tbody>
+<tr><td>RV-8821</td><td>Passenger</td><td>Abdirizak Jama Idle</td><td>Biometric mismatch</td><td>14:18 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
+<tr><td>RV-8820</td><td>Vehicle</td><td>SO-BS-1102</td><td>Expired insurance</td><td>13:45 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
+<tr><td>RV-8819</td><td>Passenger</td><td>Unknown — Duplicate FP</td><td>Possible identity fraud</td><td>12:30 today</td><td><button class="btn btn-primary btn-sm">Urgent</button></td></tr>
+<tr><td>RV-8818</td><td>Driver Card</td><td>Hassan M. Abdi</td><td>Address verification</td><td>11:15 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Document Verification Log</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Doc ID</th><th>Type</th><th>Holder</th><th>Verified By</th><th>Result</th></tr></thead><tbody>
+<tr><td>DOC-4421</td><td>NIRA ID</td><td>Fadumo Abdi Ali</td><td>Officer Ahmed M.</td><td><span class="badge success">Valid</span></td></tr>
+<tr><td>DOC-4420</td><td>Passport</td><td>Mohamed Y. Omar</td><td>Officer Fatima S.</td><td><span class="badge success">Valid</span></td></tr>
+<tr><td>DOC-4419</td><td>Driver License</td><td>Abdi K. Nur</td><td>Admin Mogadishu</td><td><span class="badge danger">Invalid</span></td></tr>
+<tr><td>DOC-4418</td><td>Insurance</td><td>SO-KM-2290</td><td>Officer Yusuf K.</td><td><span class="badge warning">Expiring</span></td></tr>
+</tbody></table></div></div>
+</div>
+<div class="card-box"><h4>Forwarded to Super Admin</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Ref</th><th>Subject</th><th>Reason</th><th>Forwarded</th><th>Status</th></tr></thead><tbody>
+<tr><td>FW-1204</td><td>Blacklist removal — DRV-442</td><td>Policy exception request</td><td>2026-06-28</td><td><span class="badge warning">Pending SA</span></td></tr>
+<tr><td>FW-1203</td><td>VIP diplomatic transit</td><td>National security clearance</td><td>2026-06-27</td><td><span class="badge info">Under Review</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-super-admin">
+<div class="hero"><div class="hero-eyebrow">National Command</div><h3>Super Admin Portal</h3><p>National-level system administration — user management, approval management, security monitoring, database management, and platform health dashboards.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>248</strong> Active Users</span><span class="hero-pill"><strong>17</strong> Pending Approvals</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search users, configs, approvals…</div><button class="btn btn-outline btn-sm">Users</button><button class="btn btn-outline btn-sm">Security</button><button class="btn btn-primary btn-sm">System Config</button></div>
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-body"><div class="kpi-label">Active Users</div><div class="kpi-value">248</div><div class="kpi-trend neutral">Across 12 cities</div></div></div>
+<div class="kpi-card teal"><div class="kpi-icon">📋</div><div class="kpi-body"><div class="kpi-label">Pending Approvals</div><div class="kpi-value">17</div><div class="kpi-trend down">5 urgent</div></div></div>
+<div class="kpi-card success"><div class="kpi-icon">⚡</div><div class="kpi-body"><div class="kpi-label">System Uptime</div><div class="kpi-value">99.7%</div><div class="kpi-trend up">↑ 0.2% vs last month</div></div></div>
+<div class="kpi-card warning"><div class="kpi-icon">📡</div><div class="kpi-body"><div class="kpi-label">API Requests/min</div><div class="kpi-value">1,240</div><div class="kpi-trend neutral">Peak: 2,100</div></div></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>User Management</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>User</th><th>Role</th><th>City</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+<tr><td>Officer Ahmed M.</td><td>Checkpoint Officer</td><td>Mogadishu</td><td>14:30 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+<tr><td>Admin Fatima H.</td><td>City Admin</td><td>Hargeisa</td><td>13:45 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+<tr><td>Officer Yusuf K.</td><td>Checkpoint Officer</td><td>Kismayo</td><td>2026-06-30</td><td><span class="badge warning">Suspended</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+<tr><td>SysAdmin Omar A.</td><td>Super Admin</td><td>National</td><td>14:35 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Approval Management</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Request</th><th>Requester</th><th>Type</th><th>Priority</th><th>Status</th></tr></thead><tbody>
+<tr><td>New City Admin — Bosaso</td><td>Regional Office</td><td>User Creation</td><td><span class="badge warning">High</span></td><td><span class="badge warning">Pending</span></td></tr>
+<tr><td>Blacklist Removal — DRV-442</td><td>City Admin Hargeisa</td><td>Policy Exception</td><td><span class="badge info">Normal</span></td><td><span class="badge info">Under Review</span></td></tr>
+<tr><td>API Key Rotation</td><td>Security Team</td><td>System Config</td><td><span class="badge danger">Critical</span></td><td><span class="badge success">Approved</span></td></tr>
+<tr><td>VIP Transit Clearance</td><td>City Admin Mogadishu</td><td>Special Permit</td><td><span class="badge warning">High</span></td><td><span class="badge warning">Pending</span></td></tr>
+</tbody></table></div></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>Security Monitoring</h4>
+<div class="stat-row"><span>Failed login attempts (24h)</span><strong>12</strong></div>
+<div class="stat-row"><span>Active sessions</span><strong>89</strong></div>
+<div class="stat-row"><span>Audit events today</span><strong>14,820</strong></div>
+<div class="stat-row"><span>Encryption status</span><strong style="color:var(--success)">AES-256 Active</strong></div>
+<div class="progress-row" style="margin-top:1rem"><div class="pr-head"><span>Threat level</span><span>Low</span></div><div class="progress-bar"><div class="progress-fill" style="width:22%;background:var(--success)"></div></div></div>
+</div>
+<div class="card-box"><h4>Database Management</h4>
+<div class="stat-row"><span>Central DB size</span><strong>284 GB</strong></div>
+<div class="stat-row"><span>Last backup</span><strong>Today 04:00 EAT</strong></div>
+<div class="stat-row"><span>Replication lag</span><strong>&lt; 2 sec</strong></div>
+<div class="stat-row"><span>NIRA sync status</span><strong style="color:var(--success)">Synced 14:30</strong></div>
+<button class="btn btn-outline btn-sm" style="margin-top:1rem">Run Manual Backup</button>
+</div>
+</div>
+</div>
+
+<div class="panel" id="panel-biometric">
+<div class="hero"><div class="hero-eyebrow">Identity Verification</div><h3>Biometric Verification</h3><p>Fingerprint and facial recognition integration with NIRA national identity database. Identity verification, duplicate detection, and fraud prevention.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>4.2M</strong> NIRA Records</span><span class="hero-pill"><strong>99.2%</strong> Match Rate</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search scan ID, subject…</div><button class="btn btn-outline btn-sm">Today</button><button class="btn btn-outline btn-sm">Duplicates</button><button class="btn btn-primary btn-sm">New Scan</button></div>
+<div class="detail-grid">
+<div class="detail-block"><h5>Scans Today</h5><p class="val">2,841</p><p>Fingerprint + facial combined</p></div>
+<div class="detail-block"><h5>Verified</h5><p class="val">2,798</p><p>98.5% success rate</p></div>
+<div class="detail-block"><h5>Duplicates Flagged</h5><p class="val">7</p><p>Requiring manual review</p></div>
+</div>
+<div class="two-col">
+<div>
+<div class="bio-scanner"><div class="scan-icon">👆</div><h4 style="margin-bottom:.5rem">Fingerprint Scanner</h4><p style="color:var(--muted);font-size:.85rem">Place finger on scanner. Matching against 4.2M NIRA records in real-time.</p><button class="btn btn-primary" style="margin-top:1rem">Start Scan</button></div>
+<div class="bio-scanner"><div class="scan-icon">📷</div><h4 style="margin-bottom:.5rem">Facial Recognition</h4><p style="color:var(--muted);font-size:.85rem">Live face capture with liveness detection and anti-spoofing enabled.</p><button class="btn btn-primary" style="margin-top:1rem;background:var(--teal);border-color:var(--teal)">Capture Face</button></div>
+</div>
+<div class="card-box"><h4>Identity Verification &amp; Duplicate Detection</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Scan ID</th><th>Subject</th><th>Match Type</th><th>Confidence</th><th>Matched Record</th><th>Status</th></tr></thead><tbody>
+<tr><td>BIO-9921</td><td>Unknown Male</td><td>Fingerprint</td><td>97.3%</td><td>SO-NIRA-442108 (Abdi M.)</td><td><span class="badge danger">Duplicate</span></td></tr>
+<tr><td>BIO-9920</td><td>Fadumo Abdi Ali</td><td>Face + FP</td><td>99.1%</td><td>SO-NIRA-882104</td><td><span class="badge success">Verified</span></td></tr>
+<tr><td>BIO-9919</td><td>Mohamed Y. Omar</td><td>Fingerprint</td><td>45.2%</td><td>—</td><td><span class="badge warning">Low Match</span></td></tr>
+<tr><td>BIO-9918</td><td>Amina Hassan</td><td>Face</td><td>98.7%</td><td>SO-NIRA-771203</td><td><span class="badge success">Verified</span></td></tr>
+<tr><td>BIO-9917</td><td>Unknown Female</td><td>Face + FP</td><td>96.8%</td><td>SO-NIRA-331205 (Hawa M.)</td><td><span class="badge danger">Duplicate</span></td></tr>
+</tbody></table></div></div>
+</div>
+</div>
+
+<div class="panel" id="panel-reporting">
+<div class="hero"><div class="hero-eyebrow">Analytics &amp; Compliance</div><h3>Reporting &amp; Analytics</h3><p>Generate comprehensive reports on daily travelers, vehicle movements, border activity, security incidents, and performance metrics across all federal states.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>24</strong> Report Types</span><span class="hero-pill"><strong>133K</strong> Monthly Crossings</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search reports…</div><button class="btn btn-outline btn-sm">Date Range</button><button class="btn btn-outline btn-sm">City</button><button class="btn btn-primary btn-sm">Generate Report</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🧳</div><h4>Daily Travelers Report</h4><p>Passenger counts by checkpoint, nationality, and travel purpose.</p></div>
+<div class="feature-card"><div class="fc-icon">🚛</div><h4>Vehicle Reports</h4><p>Registration, transit, and inspection status by type and city.</p></div>
+<div class="feature-card"><div class="fc-icon">🛂</div><h4>Border Reports</h4><p>Crossing volumes, wait times, and clearance rates per checkpoint.</p></div>
+<div class="feature-card"><div class="fc-icon">🔒</div><h4>Security Reports</h4><p>Incidents, blacklist matches, and threat assessments.</p></div>
+<div class="feature-card"><div class="fc-icon">📅</div><h4>Monthly Statistics</h4><p>Aggregated trends, comparisons, and federal summaries.</p></div>
+<div class="feature-card"><div class="fc-icon">📊</div><h4>Performance Reports</h4><p>Officer processing times, system uptime, and SLA compliance.</p></div>
+</div>
+<div class="two-col">
+<div class="chart-area"><h4 style="margin-bottom:1rem;font-size:.95rem">Monthly Crossings by City</h4><div class="chart-bars"><div class="chart-bar" style="height:90%;background:linear-gradient(180deg,#0ea5e9,#0369a1)"><span>Mogadishu</span><span class="val">48K</span></div><div class="chart-bar" style="height:65%"><span>Hargeisa</span><span class="val">32K</span></div><div class="chart-bar" style="height:45%;background:linear-gradient(180deg,#14b8a6,#0d9488)"><span>Kismayo</span><span class="val">22K</span></div><div class="chart-bar" style="height:35%"><span>Garowe</span><span class="val">17K</span></div><div class="chart-bar" style="height:30%;background:linear-gradient(180deg,#8b5cf6,#6d28d9)"><span>Bosaso</span><span class="val">14K</span></div></div></div>
+<div class="chart-area"><h4 style="margin-bottom:1rem;font-size:.95rem">Incident Severity Distribution</h4><div class="chart-bars"><div class="chart-bar" style="height:25%;background:linear-gradient(180deg,#ef4444,#b91c1c)"><span>Critical</span><span class="val">12</span></div><div class="chart-bar" style="height:50%;background:linear-gradient(180deg,#f59e0b,#d97706)"><span>High</span><span class="val">34</span></div><div class="chart-bar" style="height:75%;background:linear-gradient(180deg,#0ea5e9,#0369a1)"><span>Medium</span><span class="val">67</span></div><div class="chart-bar" style="height:95%;background:linear-gradient(180deg,#10b981,#059669)"><span>Low</span><span class="val">142</span></div></div></div>
+</div>
+<div class="card-box"><h4>Recent Generated Reports</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Report ID</th><th>Type</th><th>Period</th><th>Generated</th><th>Status</th></tr></thead><tbody>
+<tr><td>RPT-2026-0712</td><td>Daily Travelers</td><td>2026-07-01</td><td>14:00 today</td><td><span class="badge success">Ready</span></td></tr>
+<tr><td>RPT-2026-0711</td><td>Border Report</td><td>June 2026</td><td>2026-07-01 08:00</td><td><span class="badge success">Ready</span></td></tr>
+<tr><td>RPT-2026-0710</td><td>Security Report</td><td>Q2 2026</td><td>2026-06-30</td><td><span class="badge success">Ready</span></td></tr>
+<tr><td>RPT-2026-0709</td><td>Performance Report</td><td>June 2026</td><td>2026-06-30</td><td><span class="badge info">Processing</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-incident">
+<div class="hero"><div class="hero-eyebrow">Security Operations</div><h3>Incident &amp; Security</h3><p>Report and track suspicious passengers/vehicles, illegal activities, seized items, and security incidents. Integrated with emergency alerts and law enforcement.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>4</strong> Active Incidents</span><span class="hero-pill"><strong>255</strong> Resolved (YTD)</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search incidents…</div><button class="btn btn-outline btn-sm">Severity</button><button class="btn btn-outline btn-sm">Type</button><button class="btn btn-primary btn-sm">+ Report Incident</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🧑</div><h4>Suspicious Passengers</h4><p>Flag and investigate travelers with document or biometric anomalies.</p></div>
+<div class="feature-card"><div class="fc-icon">🚗</div><h4>Suspicious Vehicles</h4><p>Report vehicles with concealed cargo, false plates, or inspection failures.</p></div>
+<div class="feature-card"><div class="fc-icon">⚖️</div><h4>Illegal Activities</h4><p>Smuggling, unauthorized crossing, and document fraud cases.</p></div>
+<div class="feature-card"><div class="fc-icon">📦</div><h4>Seized Items</h4><p>Log contraband, weapons, and prohibited goods with photo evidence.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box form-preview"><h4>Incident Report Form</h4>
+<label>Incident Type</label><select><option>Suspicious Passenger</option><option>Suspicious Vehicle</option><option selected>Document Fraud</option><option>Illegal Activity</option><option>Seized Items</option><option>Officer Safety</option></select>
+<label>Location / Checkpoint</label><input type="text" value="Kismayo Port Checkpoint"/>
+<label>Severity</label><select><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select>
+<label>Subject / Vehicle</label><input type="text" value="2 individuals — forged travel documents"/>
+<label>Description</label><textarea rows="3">Suspected forged travel documents presented by two individuals attempting entry via cargo lane. Documents show inconsistencies with NIRA database.</textarea>
+<label>Reporting Officer</label><input type="text" value="Officer Ahmed K. — ID OFF-2841"/>
+<label>Photo Evidence</label><input type="text" value="📷 3 photos attached" readonly/>
+<button class="btn btn-primary" style="margin-top:.5rem">Submit Report</button>
+</div>
+<div class="card-box"><h4>Active &amp; Recent Incidents</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Type</th><th>Location</th><th>Photos</th><th>Severity</th><th>Status</th></tr></thead><tbody>
+<tr><td>INC-2026-0412</td><td>Document Fraud</td><td>Kismayo Port</td><td><div class="thumb-col">📷3</div></td><td><span class="badge danger">Critical</span></td><td><span class="badge warning">Open</span></td></tr>
+<tr><td>INC-2026-0411</td><td>Unauthorized Crossing</td><td>Hargeisa Gate</td><td><div class="thumb-col">📷1</div></td><td><span class="badge warning">High</span></td><td><span class="badge info">Investigating</span></td></tr>
+<tr><td>INC-2026-0410</td><td>Seized Items</td><td>Mogadishu MGQ</td><td><div class="thumb-col">📷5</div></td><td><span class="badge info">Medium</span></td><td><span class="badge success">Resolved</span></td></tr>
+<tr><td>INC-2026-0409</td><td>Officer Safety</td><td>Bosaso Corridor</td><td><div class="thumb-col">📷2</div></td><td><span class="badge danger">Critical</span></td><td><span class="badge success">Resolved</span></td></tr>
+<tr><td>INC-2026-0408</td><td>Suspicious Vehicle</td><td>Garowe Hub</td><td><div class="thumb-col">📷4</div></td><td><span class="badge warning">High</span></td><td><span class="badge info">Investigating</span></td></tr>
+</tbody></table></div></div>
+</div>
+</div>
+
+<div class="panel" id="panel-notifications">
+<div class="hero"><div class="hero-eyebrow">Alert Delivery</div><h3>Notifications Center</h3><p>Multi-channel notification delivery via SMS, WhatsApp, and Email. Automatic alerts for trip approvals, vehicle status, and security events.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>16,490</strong> Sent Today</span><span class="hero-pill"><strong>98.2%</strong> Delivery Rate</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search notifications…</div><button class="btn btn-outline btn-sm">Channel</button><button class="btn btn-outline btn-sm">Status</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">📱</div><h4>SMS Gateway</h4><p>Hormuud &amp; Telesom integration. 12,400 sent today.</p></div>
+<div class="feature-card"><div class="fc-icon">💬</div><h4>WhatsApp Business</h4><p>Permit delivery and status updates. 3,200 sent today.</p></div>
+<div class="feature-card"><div class="fc-icon">📧</div><h4>Email Service</h4><p>Official reports and admin alerts. 890 sent today.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>Automatic Notification Types</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Event Type</th><th>Channels</th><th>Recipients</th><th>Trigger</th></tr></thead><tbody>
+<tr><td>Trip Approval</td><td>SMS, WhatsApp</td><td>Traveler</td><td>City Admin approves registration</td></tr>
+<tr><td>Trip Rejection</td><td>SMS, Email</td><td>Traveler, City Admin</td><td>Registration denied or flagged</td></tr>
+<tr><td>Vehicle Approval</td><td>SMS, WhatsApp</td><td>Driver, Owner</td><td>Vehicle verification complete</td></tr>
+<tr><td>Vehicle Transit Alert</td><td>SMS, WhatsApp</td><td>Destination City Admin</td><td>Vehicle enters corridor zone</td></tr>
+<tr><td>Security Alert</td><td>SMS, Email, In-App</td><td>Officers, Admins</td><td>Blacklist match or incident</td></tr>
+<tr><td>Biometric Required</td><td>SMS</td><td>Traveler</td><td>Incomplete biometric capture</td></tr>
+<tr><td>Emergency Broadcast</td><td>All Channels</td><td>All checkpoint staff</td><td>Panic/Security/Medical alert</td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Notification Log</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Time</th><th>Channel</th><th>Recipient</th><th>Message</th><th>Status</th></tr></thead><tbody>
+<tr><td>14:35</td><td>SMS</td><td>+252 61 ***4521</td><td>Travel permit PR-2026-04821 approved. Show QR at MGQ.</td><td><span class="badge success">Delivered</span></td></tr>
+<tr><td>14:30</td><td>WhatsApp</td><td>+252 63 ***8834</td><td>Vehicle SO-MG-4521 departed Mogadishu. ETA Kismayo 18:00.</td><td><span class="badge success">Delivered</span></td></tr>
+<tr><td>14:22</td><td>Email</td><td>admin.hargeisa@bms.gov.so</td><td>Review queue: 3 new items require attention.</td><td><span class="badge success">Delivered</span></td></tr>
+<tr><td>14:15</td><td>SMS</td><td>+252 90 ***2290</td><td>Biometric verification required. Visit Kismayo checkpoint.</td><td><span class="badge warning">Pending</span></td></tr>
+<tr><td>14:08</td><td>WhatsApp</td><td>+252 61 ***1102</td><td>Vehicle SO-BS-1102 suspended. Contact city admin.</td><td><span class="badge danger">Failed</span></td></tr>
+</tbody></table></div></div>
+</div>
+</div>
+
+<div class="panel" id="panel-blacklist">
+<div class="hero"><div class="hero-eyebrow">Threat Management</div><h3>Blacklist &amp; Watchlist</h3><p>Manage driver and vehicle blacklists and watchlists. Real-time matching at all checkpoints prevents unauthorized crossings with instant alerts.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>47</strong> Blacklisted</span><span class="hero-pill"><strong>23</strong> Watchlist</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search blacklist, watchlist…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Add Entry</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🚫</div><h4>Add to Blacklist</h4><p>Flag drivers or vehicles with reason, expiry, and approval authority.</p></div>
+<div class="feature-card"><div class="fc-icon">👁️</div><h4>Watchlist Monitoring</h4><p>Monitor persons of interest without blocking entry — alert on match.</p></div>
+<div class="feature-card"><div class="fc-icon">🔔</div><h4>Alert on Match</h4><p>Instant notification to officers and city admin when match detected.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>Driver Blacklist</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Driver ID</th><th>Name</th><th>License</th><th>Reason</th><th>Added</th><th>Approved By</th><th>Status</th></tr></thead><tbody>
+<tr><td>DRV-2024-0442</td><td>Abdi K. Nur</td><td>SO-DL-88210</td><td>Repeated document fraud</td><td>2025-11-12</td><td>City Admin Mogadishu</td><td><span class="badge danger">Blacklisted</span></td></tr>
+<tr><td>DRV-2023-1198</td><td>Mohamed A. Warsame</td><td>SO-DL-44102</td><td>Vehicle theft conviction</td><td>2025-08-03</td><td>Super Admin</td><td><span class="badge danger">Blacklisted</span></td></tr>
+<tr><td>DRV-2022-3301</td><td>Yusuf M. Dirie</td><td>SO-DL-22098</td><td>Expired license — 3 violations</td><td>2026-01-05</td><td>City Admin Hargeisa</td><td><span class="badge danger">Blacklisted</span></td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Watchlist (Monitor Only)</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Name / Plate</th><th>Reason</th><th>Added</th><th>Approval Info</th><th>Status</th></tr></thead><tbody>
+<tr><td>WATCH-0887</td><td>Hassan O. Farah</td><td>Under investigation — smuggling</td><td>2026-02-18</td><td>Security Agency Ref #SA-442</td><td><span class="badge warning">Watchlist</span></td></tr>
+<tr><td>WATCH-0886</td><td>SO-XX-9901</td><td>Stolen vehicle report</td><td>2026-03-02</td><td>Police Report #KSM-881</td><td><span class="badge warning">Watchlist</span></td></tr>
+<tr><td>WATCH-0885</td><td>Unknown — FP Match</td><td>Possible identity fraud</td><td>2026-06-30</td><td>BIO-9921 auto-flag</td><td><span class="badge danger">Active Alert</span></td></tr>
+</tbody></table></div></div>
+</div>
+</div>
+
+<div class="panel" id="panel-driver-card">
+<div class="hero"><div class="hero-eyebrow">Driver Credentials</div><h3>Driver Card Management</h3><p>Issue, verify, and manage digital driver credentials — registration, license verification, QR codes, status management, travel history, trip logging, and card printing.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>8,420</strong> Active Cards</span><span class="hero-pill"><strong>47</strong> Suspended</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search driver, card ID, license…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Issue Card</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🪪</div><h4>Driver Registration</h4><p>Register new drivers with license and biometric data.</p></div>
+<div class="feature-card"><div class="fc-icon">✅</div><h4>License Verification</h4><p>Validate driving license against national registry.</p></div>
+<div class="feature-card"><div class="fc-icon">📲</div><h4>QR Code Generation</h4><p>Instant checkpoint verification via QR scan.</p></div>
+<div class="feature-card"><div class="fc-icon">🔄</div><h4>Status Management</h4><p>Active, suspended, or blacklisted card status.</p></div>
+<div class="feature-card"><div class="fc-icon">📜</div><h4>Travel History</h4><p>Full trip log and route history per driver.</p></div>
+<div class="feature-card"><div class="fc-icon">👥</div><h4>Passenger Assignment</h4><p>Link passengers to driver manifest for trips.</p></div>
+<div class="feature-card"><div class="fc-icon">📝</div><h4>Trip Logging</h4><p>Record departure, route, and arrival for each trip.</p></div>
+<div class="feature-card"><div class="fc-icon">🖨️</div><h4>Card Printing</h4><p>Physical credential printing at checkpoint terminals.</p></div>
+</div>
+<div class="two-col">
+<div class="id-card"><div class="id-stripe"></div><div class="id-body">
+<div class="id-card-header"><span class="flag">🇸🇴 FEDERAL REPUBLIC OF SOMALIA</span><span class="badge info">DRIVER</span></div>
+<div class="id-photo">👤</div>
+<h5>Hassan Mohamed Abdi</h5>
+<div class="id-field">Card No: DC-2026-SO-45210</div>
+<div class="id-field">License: SO-DL-45210 · Class B, D</div>
+<div class="id-field">Status: <span class="badge success">Active</span></div>
+<div class="id-field">Issued: Mogadishu · Valid until: 2028-06-30</div>
+<div class="id-field">Vehicle Auth: SO-MG-4521 (Bus)</div>
+<div class="qr-box"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</div></div>
+<div class="card-box"><h4>Trip Log — Hassan Mohamed Abdi</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Trip ID</th><th>Date</th><th>Route</th><th>Vehicle</th><th>Passengers</th><th>Status</th></tr></thead><tbody>
+<tr><td>TRP-2026-8821</td><td>2026-07-01</td><td>Mogadishu → Kismayo</td><td>SO-MG-4521</td><td>38</td><td><span class="badge info">In Transit</span></td></tr>
+<tr><td>TRP-2026-8740</td><td>2026-06-28</td><td>Kismayo → Mogadishu</td><td>SO-MG-4521</td><td>42</td><td><span class="badge success">Completed</span></td></tr>
+<tr><td>TRP-2026-8612</td><td>2026-06-25</td><td>Mogadishu → Afgooye</td><td>SO-MG-4521</td><td>15</td><td><span class="badge success">Completed</span></td></tr>
+<tr><td>TRP-2026-8501</td><td>2026-06-22</td><td>Mogadishu → Hargeisa</td><td>SO-MG-4521</td><td>40</td><td><span class="badge success">Completed</span></td></tr>
+</tbody></table></div></div>
+</div>
+</div>
+
+<div class="panel" id="panel-official-id">
+<div class="hero"><div class="hero-eyebrow">Government Credentials</div><h3>Official ID Card Management</h3><p>Manage official identity cards for ministers, military, police, diplomats, VIPs, and checkpoint officers with security clearance levels.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>1,240</strong> Active Cards</span><span class="hero-pill"><strong>5</strong> Clearance Levels</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search card ID, holder…</div><button class="btn btn-outline btn-sm">Card Type</button><button class="btn btn-primary btn-sm">+ Issue ID</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🏛️</div><h4>Minister / Government</h4><p>Federal ministers, directors, and government staff.</p></div>
+<div class="feature-card"><div class="fc-icon">🎖️</div><h4>Military</h4><p>Armed forces personnel with rank and unit encoding.</p></div>
+<div class="feature-card"><div class="fc-icon">👮</div><h4>Police</h4><p>Law enforcement officers with jurisdiction data.</p></div>
+<div class="feature-card"><div class="fc-icon">🌐</div><h4>Diplomat</h4><p>Foreign diplomatic staff with embassy affiliation.</p></div>
+<div class="feature-card"><div class="fc-icon">⭐</div><h4>VIP</h4><p>High-profile individuals with enhanced security protocols.</p></div>
+<div class="feature-card"><div class="fc-icon">🛂</div><h4>Checkpoint Officer</h4><p>Border patrol and inspection officer credentials.</p></div>
+</div>
+<div class="two-col">
+<div class="id-card" style="border-color:var(--purple)"><div class="id-stripe"></div><div class="id-body">
+<div class="id-card-header"><span class="flag">🇸🇴 BMS OFFICIAL ID</span><span class="badge purple">OFFICER</span></div>
+<div class="id-photo">👮</div>
+<h5>Officer Ahmed Mohamed</h5>
+<div class="id-field">ID: OID-2025-SO-2841</div>
+<div class="id-field">Role: Checkpoint Officer · Clearance Level 2</div>
+<div class="id-field">Station: Mogadishu International Airport</div>
+<div class="id-field">Issued: 2025-03-15 · Expires: 2027-03-15</div>
+</div></div>
+<div class="card-box"><h4>Security Clearance Levels</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Level</th><th>Designation</th><th>Access Scope</th><th>Card Types</th></tr></thead><tbody>
+<tr><td>Level 1</td><td>Standard</td><td>Checkpoint operations, passenger lookup</td><td>Officer, Police</td></tr>
+<tr><td>Level 2</td><td>Elevated</td><td>+ Incident reports, blacklist alerts</td><td>Officer, City Admin</td></tr>
+<tr><td>Level 3</td><td>Restricted</td><td>+ Security monitoring, watchlist</td><td>Military, Police Command</td></tr>
+<tr><td>Level 4</td><td>Confidential</td><td>+ National approvals, system config</td><td>Minister, Super Admin</td></tr>
+<tr><td>Level 5</td><td>Top Secret</td><td>Full system access, VIP protocols</td><td>Diplomat, VIP, National Security</td></tr>
+</tbody></table></div></div>
+</div>
+<div class="card-box"><h4>Official Card Registry</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Card ID</th><th>Holder</th><th>Type</th><th>Clearance</th><th>Station</th><th>Status</th></tr></thead><tbody>
+<tr><td>OID-2025-SO-2841</td><td>Ahmed Mohamed</td><td>Officer</td><td>Level 2</td><td>Mogadishu MGQ</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>OID-2025-SO-1102</td><td>Fatima Hassan</td><td>City Admin</td><td>Level 2</td><td>Hargeisa</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>OID-2024-SO-0098</td><td>Dr. Omar Jama</td><td>Minister</td><td>Level 4</td><td>Mogadishu</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>OID-2024-SO-0055</td><td>Col. Yusuf Abdi</td><td>Military</td><td>Level 3</td><td>National</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>OID-2024-SO-0033</td><td>Amb. Sarah Chen</td><td>Diplomat</td><td>Level 5</td><td>Embassy Row</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>OID-2023-SO-4420</td><td>Yusuf Abdi</td><td>Officer</td><td>Level 1</td><td>Kismayo Port</td><td><span class="badge warning">Expiring Soon</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-transit">
+<div class="hero"><div class="hero-eyebrow">Live GPS Tracking</div><h3>Vehicle Transit Tracking</h3><p>GPS-based real-time tracking of inter-city vehicle movements. Inter-city notification workflow alerts destination cities when vehicles enter corridor zones.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>342</strong> In Transit</span><span class="hero-pill"><strong>12</strong> Corridors Active</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search plate, route…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">Live Map</button></div>
+<div class="map-placeholder">
+<div class="map-routes">
+<div class="map-route active" style="top:32%;left:25%;width:28%;transform:rotate(25deg)"></div>
+<div class="map-route" style="top:22%;left:55%;width:22%;transform:rotate(-8deg)"></div>
+<div class="map-route" style="top:48%;left:30%;width:18%;transform:rotate(55deg)"></div>
+<div class="map-route" style="top:35%;left:68%;width:15%;transform:rotate(15deg)"></div>
+</div>
+<div class="map-dot" style="top:30%;left:25%"></div><span class="map-label" style="top:26%;left:22%">Mogadishu</span>
+<div class="map-dot" style="top:45%;left:48%;background:var(--warning);width:14px;height:14px"></div><span class="map-label" style="top:41%;left:45%">SO-MG-4521</span>
+<div class="map-dot" style="top:20%;left:70%"></div><span class="map-label" style="top:16%;left:67%">Hargeisa</span>
+<div class="map-dot" style="top:65%;left:40%"></div><span class="map-label" style="top:61%;left:37%">Kismayo</span>
+<div class="map-dot" style="top:35%;left:80%"></div><span class="map-label" style="top:31%;left:77%">Bosaso</span>
+<div class="map-dot" style="top:50%;left:72%"></div><span class="map-label" style="top:46%;left:69%">Garowe</span>
+<span style="position:relative;z-index:1;color:var(--muted);font-size:.85rem;margin-top:8rem">🗺️ Somalia Transit Map — Live GPS with corridor routes</span>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>In-Transit Vehicles</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Plate</th><th>Route</th><th>Driver</th><th>Last Ping</th><th>GPS ETA</th><th>Trip Status</th></tr></thead><tbody>
+<tr><td>SO-MG-4521</td><td>Mogadishu → Kismayo</td><td>Hassan M. Abdi</td><td>14:34 (2 min ago)</td><td>18:00</td><td><span class="badge info">In Transit</span></td></tr>
+<tr><td>SO-HG-8834</td><td>Hargeisa → Bosaso</td><td>Omar A. Jama</td><td>14:31 (5 min ago)</td><td>20:30</td><td><span class="badge info">In Transit</span></td></tr>
+<tr><td>SO-GR-7745</td><td>Garowe → Hargeisa</td><td>Yusuf H. Mohamed</td><td>14:28 (8 min ago)</td><td>22:15</td><td><span class="badge warning">Delayed</span></td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Incoming to Destination City — Kismayo</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Plate</th><th>Origin</th><th>ETA</th><th>Passengers</th><th>Notified</th><th>Status</th></tr></thead><tbody>
+<tr><td>SO-MG-4521</td><td>Mogadishu</td><td>18:00</td><td>38</td><td>14:10 ✓</td><td><span class="badge info">En Route</span></td></tr>
+<tr><td>SO-GR-3310</td><td>Garowe</td><td>19:45</td><td>22</td><td>13:55 ✓</td><td><span class="badge info">En Route</span></td></tr>
+<tr><td>SO-MG-8890</td><td>Mogadishu</td><td>21:30</td><td>15</td><td>Pending</td><td><span class="badge warning">Departing</span></td></tr>
+</tbody></table></div>
+<p style="font-size:.8rem;color:var(--muted);margin-top:.75rem"><strong>Workflow:</strong> Vehicle departs → GPS ping → Corridor zone entry → Auto SMS/WhatsApp to destination city admin → Checkpoint pre-clearance → Arrival logged.</p>
+</div>
+</div>
+</div>
+
+<div class="panel" id="panel-communication">
+<div class="hero"><div class="hero-eyebrow">Unified Comms</div><h3>Communication Center</h3><p>Unified communications hub for checkpoint officers, city admins, and national command — messaging, voice, video, broadcast, and inter-checkpoint coordination.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>156</strong> Messages Today</span><span class="hero-pill"><strong>12</strong> Active Channels</span></div></div>
+<div class="tabs" id="commTabs">
+<button class="tab-btn active" data-ctab="msg">Internal Messaging</button>
+<button class="tab-btn" data-ctab="voice">Voice Calls</button>
+<button class="tab-btn" data-ctab="video">Video Calls</button>
+<button class="tab-btn" data-ctab="broadcast">Broadcast</button>
+<button class="tab-btn" data-ctab="checkpoint">Inter-Checkpoint</button>
+</div>
+<div class="tab-panel active" id="ctab-msg">
+<div class="toolbar"><div class="search-fake">🔍 Search messages…</div><button class="btn btn-primary btn-sm">+ New Message</button></div>
+<div class="card-box"><h4>Internal Messages — Chat View</h4>
+<div class="chat-list">
+<div class="chat-msg"><div class="chat-avatar">AM</div><div class="chat-bubble"><div class="chat-meta"><span>Officer Ahmed (MGQ)</span><span>14:20</span></div><p>Urgent: Document fraud case INC-0412 — two individuals with forged papers at cargo lane. Requesting city admin support.</p></div></div>
+<div class="chat-msg outgoing"><div class="chat-avatar">CA</div><div class="chat-bubble"><div class="chat-meta"><span>City Admin Mogadishu</span><span>14:22</span></div><p>Acknowledged. Security team dispatched. Hold subjects at checkpoint B.</p></div></div>
+<div class="chat-msg"><div class="chat-avatar">FH</div><div class="chat-bubble"><div class="chat-meta"><span>Admin Fatima (Hargeisa)</span><span>13:45</span></div><p>Shift change notice — Gate B closed for maintenance until 16:00. Redirect traffic to Gate A.</p></div></div>
+<div class="chat-msg"><div class="chat-avatar">SA</div><div class="chat-bubble"><div class="chat-meta"><span>Super Admin</span><span>12:00</span></div><p>System maintenance window tonight 02:00–04:00 EAT. All city admins please notify local officers.</p></div></div>
+<div class="chat-msg"><div class="chat-avatar">YK</div><div class="chat-bubble"><div class="chat-meta"><span>Officer Yusuf (Kismayo)</span><span>11:30</span></div><p>Biometric scanner offline at Port Terminal 2. IT ticket #IT-4421 submitted.</p></div></div>
+</div></div>
+<p style="font-size:.8rem;color:var(--muted);margin-top:.5rem">Features: End-to-end encrypted messaging, read receipts, file attachments, and priority flagging for urgent security communications.</p>
+</div>
+<div class="tab-panel" id="ctab-voice"><div class="toolbar"><button class="btn btn-primary btn-sm">📞 New Call</button></div><div class="card-box"><h4>Recent Voice Calls</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Caller</th><th>Recipient</th><th>Duration</th><th>Time</th><th>Status</th></tr></thead><tbody>
+<tr><td>MGQ Control Room</td><td>Kismayo Port</td><td>4:32</td><td>14:10</td><td><span class="badge success">Completed</span></td></tr>
+<tr><td>Hargeisa Admin</td><td>National Command</td><td>12:08</td><td>13:30</td><td><span class="badge success">Completed</span></td></tr>
+<tr><td>Bosaso Checkpoint</td><td>Garowe Hub</td><td>2:15</td><td>12:45</td><td><span class="badge success">Completed</span></td></tr>
+<tr><td>Officer Ahmed M.</td><td>City Admin Mogadishu</td><td>—</td><td>14:25</td><td><span class="badge warning">Missed</span></td></tr>
+</tbody></table></div>
+<p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">VoIP integration with checkpoint terminals. Call recording enabled for audit compliance.</p></div></div>
+<div class="tab-panel" id="ctab-video"><div class="toolbar"><button class="btn btn-primary btn-sm">📹 Start Conference</button></div><div class="card-box"><h4>Video Conference Sessions</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Session</th><th>Participants</th><th>Duration</th><th>Status</th></tr></thead><tbody>
+<tr><td>Daily Ops Briefing</td><td>5 City Admins + National</td><td>45 min</td><td><span class="badge success">Ended</span></td></tr>
+<tr><td>Incident Review INC-0412</td><td>Kismayo + Mogadishu teams</td><td>—</td><td><span class="badge info">Scheduled 15:00</span></td></tr>
+<tr><td>Security Protocol Update</td><td>All Southern Zone Officers</td><td>30 min</td><td><span class="badge success">Ended</span></td></tr>
+</tbody></table></div>
+<p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">HD video with screen sharing for incident review and multi-checkpoint coordination.</p></div></div>
+<div class="tab-panel" id="ctab-broadcast"><div class="toolbar"><button class="btn btn-primary btn-sm">📢 Send Broadcast</button></div><div class="card-box"><h4>Broadcast Messages</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Priority</th><th>Message</th><th>Sent To</th><th>Time</th><th>Acknowledged</th></tr></thead><tbody>
+<tr><td><span class="badge danger">High</span></td><td>Increased security protocol at all southern checkpoints</td><td>All Officers — South Zone</td><td>11:00</td><td>89%</td></tr>
+<tr><td><span class="badge info">Normal</span></td><td>NIRA system sync completed successfully</td><td>All Checkpoints</td><td>08:30</td><td>100%</td></tr>
+<tr><td><span class="badge warning">Medium</span></td><td>New biometric scanner firmware available — schedule update</td><td>All City Admins</td><td>Yesterday</td><td>80%</td></tr>
+</tbody></table></div></div></div>
+<div class="tab-panel" id="ctab-checkpoint"><div class="toolbar"><button class="btn btn-primary btn-sm">+ New Coordination</button></div><div class="card-box"><h4>Inter-Checkpoint Coordination</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>From</th><th>To</th><th>Subject</th><th>Priority</th><th>Status</th></tr></thead><tbody>
+<tr><td>Mogadishu MGQ</td><td>Kismayo Port</td><td>Transfer: Passenger PR-04819 escort required</td><td><span class="badge warning">High</span></td><td><span class="badge warning">Pending</span></td></tr>
+<tr><td>Hargeisa Gate</td><td>Bosaso Corridor</td><td>Vehicle SO-HG-8834 pre-clearance approved</td><td><span class="badge info">Normal</span></td><td><span class="badge success">Acknowledged</span></td></tr>
+<tr><td>Garowe Hub</td><td>Hargeisa Gate</td><td>Shared watchlist match — coordinate intercept</td><td><span class="badge danger">Critical</span></td><td><span class="badge danger">Active</span></td></tr>
+<tr><td>Kismayo Port</td><td>Mogadishu MGQ</td><td>Incident INC-0412 evidence transfer</td><td><span class="badge warning">High</span></td><td><span class="badge info">In Progress</span></td></tr>
+</tbody></table></div></div></div>
+</div>
+
+<div class="panel" id="panel-emergency">
+<div class="hero"><div class="hero-eyebrow">Crisis Response</div><h3>Emergency Alerts</h3><p>One-touch emergency alert system for checkpoint officers. Alerts broadcast to Super Admin, City Admin, security agencies, nearby checkpoints, and local authorities.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>3</strong> Alerts Today</span><span class="hero-pill"><strong>&lt;30s</strong> Response Time</span></div></div>
+<div class="alert-btns">
+<button class="alert-btn panic" onclick="triggerAlert('panic')">🚨 PANIC ALERT</button>
+<button class="alert-btn security" onclick="triggerAlert('security')">⚠️ SECURITY ALERT</button>
+<button class="alert-btn medical" onclick="triggerAlert('medical')">🏥 MEDICAL ALERT</button>
+</div>
+<div class="detail-grid">
+<div class="detail-block"><h5>Super Admin</h5><p>National command center notified instantly with full incident context.</p></div>
+<div class="detail-block"><h5>City Admin</h5><p>Local city command receives alert with officer location and checkpoint ID.</p></div>
+<div class="detail-block"><h5>Security Agencies</h5><p>Police, military, and border security units dispatched per protocol.</p></div>
+<div class="detail-block"><h5>Nearby Checkpoints</h5><p>Adjacent checkpoints alerted to lock down or assist as needed.</p></div>
+<div class="detail-block"><h5>Local Authorities</h5><p>Municipal and regional authorities notified for medical/civil response.</p></div>
+<div class="detail-block"><h5>Response Units</h5><p>Nearest patrol units auto-dispatched with GPS routing to location.</p></div>
+</div>
+<div class="card-box"><h4>Emergency Alert Log</h4>
+<div class="table-wrap"><table class="data-table" id="alertLog"><thead><tr><th>Time</th><th>Type</th><th>Officer</th><th>Checkpoint</th><th>Recipients Notified</th><th>Response</th><th>Status</th></tr></thead><tbody>
+<tr><td>13:22 today</td><td><span class="badge danger">Panic</span></td><td>Officer Yusuf K.</td><td>Bosaso Corridor</td><td>SA, City Admin, 3 checkpoints, Unit BRAVO-3</td><td>Unit BRAVO-3 dispatched</td><td><span class="badge success">Resolved</span></td></tr>
+<tr><td>11:45 today</td><td><span class="badge warning">Security</span></td><td>Officer Ahmed M.</td><td>Mogadishu MGQ</td><td>SA, City Admin, 2 checkpoints</td><td>Backup — 2 officers</td><td><span class="badge success">Resolved</span></td></tr>
+<tr><td>09:10 today</td><td><span class="badge success">Medical</span></td><td>Officer Fatima S.</td><td>Kismayo Port</td><td>City Admin, Local Health, Ambulance</td><td>Ambulance KSM-01</td><td><span class="badge success">Resolved</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-permit">
+<div class="hero"><div class="hero-eyebrow">Digital Clearance</div><h3>Digital Travel Permit</h3><p>Issue and verify digital travel permits with embedded QR codes. All fields captured: permit ID, passenger info, destination, purpose, issue/expiry dates, and verification status.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>48,210</strong> Issued (YTD)</span><span class="hero-pill"><strong>4,287</strong> Active Today</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search permit ID, name…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">Verify QR</button></div>
+<div class="two-col">
+<div class="id-card" style="border-color:var(--teal);max-width:400px"><div class="id-stripe"></div><div class="id-body">
+<div class="id-card-header"><span class="flag">🇸🇴 DIGITAL TRAVEL PERMIT</span><span class="badge success">VALID</span></div>
+<div style="display:flex;gap:1rem;align-items:flex-start">
+<div><div class="id-photo" style="width:60px;height:72px;font-size:1.5rem">👤</div></div>
+<div><h5>Fadumo Abdi Ali</h5>
+<div class="id-field">Permit ID: DTP-2026-04821</div>
+<div class="id-field">NIRA: SO-NIRA-882104</div>
+<div class="id-field">Destination: Mogadishu (MGQ Airport)</div>
+<div class="id-field">Origin: Nairobi, Kenya</div>
+<div class="id-field">Purpose: Family Visit</div>
+<div class="id-field">Issued: 2026-07-01 · Expires: 2026-07-08</div>
+<div class="id-field">Verification: <span class="badge success">Verified</span></div>
+</div></div>
+<div class="qr-box" style="margin:1rem auto 0"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+</div></div>
+<div>
+<div class="detail-grid" style="grid-template-columns:1fr 1fr">
+<div class="detail-block"><h5>Permit ID</h5><p class="val">DTP-2026-04821</p></div>
+<div class="detail-block"><h5>QR Code</h5><p class="val">Generated ✓</p></div>
+<div class="detail-block"><h5>Issue Date</h5><p class="val">2026-07-01</p></div>
+<div class="detail-block"><h5>Expiry Date</h5><p class="val">2026-07-08</p></div>
+</div>
+<div class="card-grid" style="grid-template-columns:1fr;margin-top:1rem">
+<div class="feature-card"><div class="fc-icon">✅</div><h4>Verify Permit</h4><p>Scan QR code or enter permit ID to validate authenticity, expiry, and blacklist status.</p></div>
+<div class="feature-card"><div class="fc-icon">📋</div><h4>Requirements</h4><p>Valid NIRA ID, biometric verification, cleared blacklist, city admin approval (if flagged).</p></div>
+</div>
+</div>
+</div>
+<div class="card-box"><h4>Recent Permits</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Permit ID</th><th>Passenger</th><th>Destination</th><th>Purpose</th><th>Issued</th><th>Expires</th><th>Status</th></tr></thead><tbody>
+<tr><td>DTP-2026-04821</td><td>Fadumo Abdi Ali</td><td>Mogadishu</td><td>Family Visit</td><td>2026-07-01</td><td>2026-07-08</td><td><span class="badge success">Valid</span></td></tr>
+<tr><td>DTP-2026-04820</td><td>Mohamed Y. Omar</td><td>Hargeisa</td><td>Business</td><td>2026-07-01</td><td>2026-07-08</td><td><span class="badge success">Valid</span></td></tr>
+<tr><td>DTP-2026-04819</td><td>Amina Hassan</td><td>Mogadishu</td><td>Medical</td><td>2026-07-01</td><td>—</td><td><span class="badge warning">Pending</span></td></tr>
+<tr><td>DTP-2026-04800</td><td>Abdi K. Nur</td><td>Kismayo</td><td>Transit</td><td>2026-06-30</td><td>2026-07-07</td><td><span class="badge info">Used</span></td></tr>
+</tbody></table></div></div>
+</div>
+
+<div class="panel" id="panel-workflow">
+<div class="hero"><div class="hero-eyebrow">End-to-End Process</div><h3>Complete BMS Workflow</h3><p>Full 9-step national border management process from traveler planning through staff registration, biometric capture, admin approvals, QR receipt, checkpoint verification, central database sync, and reporting.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>9</strong> Integrated Steps</span><span class="hero-pill"><strong>~15 min</strong> Avg. Processing</span></div></div>
+<h4 class="section-title">9-Step National Border Workflow</h4>
+<div class="workflow-steps">
+<div class="wf-step done"><div class="wf-num">1</div><p>Traveler Plans Trip</p></div>
+<div class="wf-step done"><div class="wf-num">2</div><p>Staff Registration</p></div>
+<div class="wf-step done"><div class="wf-num">3</div><p>Biometric Capture</p></div>
+<div class="wf-step done"><div class="wf-num">4</div><p>City Admin Review</p></div>
+<div class="wf-step"><div class="wf-num">5</div><p>Super Admin Approval</p></div>
+<div class="wf-step"><div class="wf-num">6</div><p>QR Code Receipt</p></div>
+<div class="wf-step"><div class="wf-num">7</div><p>Checkpoint Verification</p></div>
+<div class="wf-step"><div class="wf-num">8</div><p>Central Database Sync</p></div>
+<div class="wf-step"><div class="wf-num">9</div><p>Reports Generated</p></div>
+</div>
+<div class="two-col" style="margin-top:2rem">
+<div class="card-box"><h4>Steps 1–5: Registration &amp; Approval</h4>
+<div class="workflow-vertical">
+<div class="wf-vstep"><div class="wf-num">1</div><div class="wf-vbody"><h5>Traveler Plans Trip</h5><p>Traveler determines origin, destination, purpose, and gathers required documents (NIRA ID / passport).</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">2</div><div class="wf-vbody"><h5>Staff Registration</h5><p>Checkpoint officer captures personal info, travel purpose, and documents at registration terminal.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">3</div><div class="wf-vbody"><h5>Biometric Capture</h5><p>Fingerprint and facial scan performed; matched against NIRA database with duplicate detection.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">4</div><div class="wf-vbody"><h5>City Admin Review</h5><p>Flagged cases routed to city admin for document verification and initial registration approval.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">5</div><div class="wf-vbody"><h5>Super Admin Approval</h5><p>Complex cases, VIP transits, and policy exceptions escalated to national super admin queue.</p></div></div>
+</div>
+</div>
+<div class="card-box"><h4>Steps 6–9: Clearance &amp; Archive</h4>
+<div class="workflow-vertical">
+<div class="wf-vstep"><div class="wf-num">6</div><div class="wf-vbody"><h5>QR Code Receipt</h5><p>Digital travel permit or driver card generated with unique QR code; sent via SMS/WhatsApp to traveler.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">7</div><div class="wf-vbody"><h5>Checkpoint Verification</h5><p>QR scanned at border gate; officer confirms identity, permit validity, and logs clearance event.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">8</div><div class="wf-vbody"><h5>Central Database Sync</h5><p>All events synced to cloud central database within 30 seconds; available for inter-checkpoint queries.</p></div></div>
+<div class="wf-vline"></div>
+<div class="wf-vstep"><div class="wf-num">9</div><div class="wf-vbody"><h5>Reports Generated</h5><p>Crossing data archived; daily/monthly reports auto-generated for federal and city authorities.</p></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel" id="panel-settings">
+<div class="hero"><div class="hero-eyebrow">System Configuration</div><h3>Settings &amp; Configuration</h3><p>Manage platform-wide preferences, security policies, external integrations, notification channels, localization, and backup schedules for the national Border Management System.</p>
+<div class="hero-pills"><span class="hero-pill"><strong>6</strong> Config Groups</span><span class="hero-pill"><strong>v2.4</strong> Platform</span><span class="hero-pill"><strong>AES-256</strong> Enforced</span></div></div>
+<div class="toolbar"><div class="search-fake">🔍 Search settings…</div><button class="btn btn-outline btn-sm">Reset Defaults</button><button class="btn btn-primary btn-sm">💾 Save Changes</button></div>
+<div class="card-grid">
+<div class="feature-card"><div class="fc-icon">🎛️</div><h4>General</h4><p>System name, language, timezone, and date format.</p></div>
+<div class="feature-card"><div class="fc-icon">🔐</div><h4>Security</h4><p>Password policy, 2FA, session, and encryption.</p></div>
+<div class="feature-card"><div class="fc-icon">🔌</div><h4>Integrations</h4><p>NIRA, SMS, WhatsApp, Email, and GPS providers.</p></div>
+<div class="feature-card"><div class="fc-icon">🔔</div><h4>Notifications</h4><p>Default channels and delivery preferences.</p></div>
+<div class="feature-card"><div class="fc-icon">🌍</div><h4>Localization</h4><p>Multi-language and regional formatting.</p></div>
+<div class="feature-card"><div class="fc-icon">💾</div><h4>Backup</h4><p>Automated schedules and retention policy.</p></div>
+</div>
+<div class="two-col">
+<div class="card-box form-preview"><h4>General Settings</h4>
+<label>System Name</label><input type="text" value="Somalia Border Management System (BMS)"/>
+<label>Default Language</label><select><option selected>English</option><option>Soomaali</option><option>العربية</option></select>
+<label>Timezone</label><select><option selected>EAT — East Africa Time (UTC+3)</option><option>UTC</option></select>
+<label>Date Format</label><select><option selected>YYYY-MM-DD</option><option>DD/MM/YYYY</option><option>MM/DD/YYYY</option></select>
+<label>Session Timeout</label><select><option>15 minutes</option><option selected>30 minutes</option><option>60 minutes</option></select>
+</div>
+<div class="card-box form-preview"><h4>Security Policy</h4>
+<label>Minimum Password Length</label><input type="text" value="12 characters"/>
+<label>Two-Factor Authentication (2FA)</label><select><option selected>Required for all admins</option><option>Optional</option><option>Required for all users</option></select>
+<label>Max Failed Login Attempts</label><input type="text" value="5 (then 15-min lockout)"/>
+<label>Data Encryption</label><input type="text" value="AES-256 (enforced — locked)" readonly/>
+<label>Audit Log Retention</label><select><option>30 days</option><option selected>90 days</option><option>1 year</option><option>Indefinite</option></select>
+</div>
+</div>
+<div class="two-col">
+<div class="card-box"><h4>External Integrations</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Service</th><th>Provider</th><th>Type</th><th>Status</th></tr></thead><tbody>
+<tr><td>NIRA National Database</td><td>Gov NIRA API</td><td>Biometric / Identity</td><td><span class="badge success">Connected</span></td></tr>
+<tr><td>SMS Gateway</td><td>Hormuud · Telesom</td><td>Notifications</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>WhatsApp Business</td><td>Meta Cloud API</td><td>Notifications</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>Email (SMTP)</td><td>bms.gov.so relay</td><td>Reports / Alerts</td><td><span class="badge success">Active</span></td></tr>
+<tr><td>GPS Tracking</td><td>Fleet Telematics</td><td>Transit</td><td><span class="badge warning">Degraded</span></td></tr>
+<tr><td>Cloud Storage</td><td>Central DB (geo-replicated)</td><td>Database</td><td><span class="badge success">Connected</span></td></tr>
+</tbody></table></div></div>
+<div class="card-box"><h4>Notification &amp; Channel Defaults</h4>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Channel</th><th>Purpose</th><th>Default</th></tr></thead><tbody>
+<tr><td>📱 SMS</td><td>Approvals, alerts, OTP</td><td><span class="badge success">Enabled</span></td></tr>
+<tr><td>💬 WhatsApp</td><td>Permits, transit updates</td><td><span class="badge success">Enabled</span></td></tr>
+<tr><td>📧 Email</td><td>Reports, admin notices</td><td><span class="badge success">Enabled</span></td></tr>
+<tr><td>🖥️ In-App</td><td>Real-time officer alerts</td><td><span class="badge success">Enabled</span></td></tr>
+<tr><td>📢 Emergency Broadcast</td><td>All channels — panic/security</td><td><span class="badge danger">Always On</span></td></tr>
+</tbody></table></div>
+<div class="stat-row" style="margin-top:.75rem"><span>Quiet hours (non-urgent)</span><strong>22:00 – 06:00 EAT</strong></div>
+<div class="stat-row"><span>Delivery retry attempts</span><strong>3</strong></div>
+</div>
+</div>
+<div class="card-box"><h4>Backup &amp; Maintenance</h4>
+<div class="two-col" style="margin-bottom:0">
+<div>
+<div class="stat-row"><span>Automated full backup</span><strong>Daily · 04:00 EAT</strong></div>
+<div class="stat-row"><span>Incremental backup</span><strong>Hourly</strong></div>
+<div class="stat-row"><span>Retention period</span><strong>90 days</strong></div>
+<div class="stat-row"><span>Last successful backup</span><strong style="color:var(--success)">Today 04:00 EAT ✓</strong></div>
+</div>
+<div>
+<div class="stat-row"><span>Geo-replication</span><strong style="color:var(--success)">Active — 2 regions</strong></div>
+<div class="stat-row"><span>Maintenance window</span><strong>Sun 02:00 – 04:00 EAT</strong></div>
+<div class="stat-row"><span>Platform version</span><strong>BMS v2.4.1</strong></div>
+<div class="stat-row"><span>Health status</span><strong style="color:var(--success)">All systems operational</strong></div>
+</div>
+</div>
+<div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn btn-outline btn-sm">Run Manual Backup</button><button class="btn btn-outline btn-sm">Download Config</button><button class="btn btn-primary btn-sm">💾 Save Changes</button></div>
+</div>
+</div>
+<!-- PANELS END -->
+</main>
+</div>
+<script>
+const NAV = [
+  { group: 'Overview', items: [
+    { id: 'dashboard', icon: '📊', label: 'Dashboard', badge: null },
+    { id: 'overview', icon: '🏛️', label: 'System Overview', badge: null }
+  ]},
+  { group: 'Operations', items: [
+    { id: 'passenger', icon: '🧳', label: 'Passenger Registration', badge: '142' },
+    { id: 'vehicle', icon: '🚗', label: 'Vehicle Management', badge: '342' },
+    { id: 'transit', icon: '📍', label: 'Vehicle Transit Tracking', badge: '342' },
+    { id: 'permit', icon: '📄', label: 'Digital Travel Permit', badge: null }
+  ]},
+  { group: 'Administration', items: [
+    { id: 'city-admin', icon: '🏙️', label: 'City Admin Portal', badge: '34', hot: true },
+    { id: 'super-admin', icon: '⚙️', label: 'Super Admin Portal', badge: '17', hot: true },
+    { id: 'settings', icon: '🎛️', label: 'Settings & Configuration', badge: null }
+  ]},
+  { group: 'Identity & Security', items: [
+    { id: 'biometric', icon: '👆', label: 'Biometric Verification', badge: '7', hot: true },
+    { id: 'driver-card', icon: '🪪', label: 'Driver Card Management', badge: null },
+    { id: 'official-id', icon: '🆔', label: 'Official ID Card Management', badge: null },
+    { id: 'blacklist', icon: '🚫', label: 'Blacklist & Watchlist', badge: '70' },
+    { id: 'incident', icon: '🛡️', label: 'Incident & Security', badge: '4', hot: true },
+    { id: 'emergency', icon: '🚨', label: 'Emergency Alerts', badge: null }
+  ]},
+  { group: 'Communications', items: [
+    { id: 'communication', icon: '💬', label: 'Communication Center', badge: '156' },
+    { id: 'notifications', icon: '🔔', label: 'Notifications', badge: '16K' }
+  ]},
+  { group: 'Analytics', items: [
+    { id: 'reporting', icon: '📈', label: 'Reporting & Analytics', badge: null },
+    { id: 'workflow', icon: '🔄', label: 'Complete Workflow', badge: null }
+  ]}
+];
+
+const TITLES = {
+  dashboard: 'Dashboard',
+  overview: 'System Overview',
+  passenger: 'Passenger Registration',
+  vehicle: 'Vehicle Management',
+  'city-admin': 'City Admin Portal',
+  'super-admin': 'Super Admin Portal',
+  settings: 'Settings & Configuration',
+  biometric: 'Biometric Verification',
+  reporting: 'Reporting & Analytics',
+  incident: 'Incident & Security',
+  notifications: 'Notifications',
+  blacklist: 'Blacklist & Watchlist',
+  'driver-card': 'Driver Card Management',
+  'official-id': 'Official ID Card Management',
+  transit: 'Vehicle Transit Tracking',
+  communication: 'Communication Center',
+  emergency: 'Emergency Alerts',
+  permit: 'Digital Travel Permit',
+  workflow: 'Complete Workflow'
+};
+
+const SECTIONS = {
+  dashboard: 'Overview', overview: 'Overview',
+  passenger: 'Operations', vehicle: 'Operations', transit: 'Operations', permit: 'Operations',
+  'city-admin': 'Administration', 'super-admin': 'Administration', settings: 'Administration',
+  biometric: 'Identity & Security', 'driver-card': 'Identity & Security', 'official-id': 'Identity & Security',
+  blacklist: 'Identity & Security', incident: 'Identity & Security', emergency: 'Identity & Security',
+  communication: 'Communications', notifications: 'Communications',
+  reporting: 'Analytics', workflow: 'Analytics'
+};
+
+function buildNav() {
+  const nav = document.getElementById('nav');
+  NAV.forEach(g => {
+    const grp = document.createElement('div');
+    grp.className = 'nav-group';
+    grp.innerHTML = '<div class="nav-label">' + g.group + '</div>';
+    g.items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-item' + (item.id === 'dashboard' ? ' active' : '');
+      btn.dataset.panel = item.id;
+      let badgeHtml = '';
+      if (item.badge) badgeHtml = '<span class="nav-badge' + (item.hot ? ' hot' : '') + '">' + item.badge + '</span>';
+      btn.innerHTML = '<span class="ico">' + item.icon + '</span><span class="nav-label-text">' + item.label + '</span>' + badgeHtml;
+      btn.addEventListener('click', () => showPanel(item.id));
+      grp.appendChild(btn);
+    });
+    nav.appendChild(grp);
+  });
+}
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const navBtn = document.querySelector('.nav-item[data-panel="' + id + '"]');
+  if (navBtn) navBtn.classList.add('active');
+  document.getElementById('pageTitle').textContent = TITLES[id] || id;
+  document.getElementById('bcPage').textContent = TITLES[id] || id;
+  document.getElementById('bcSection').textContent = SECTIONS[id] || 'BMS';
+  closeSidebar();
+}
+
+function updateClock() {
+  const now = new Date();
+  const opts = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  document.getElementById('clock').textContent = now.toLocaleString('en-GB', opts) + ' EAT';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+});
+document.getElementById('overlay').addEventListener('click', closeSidebar);
+
+document.querySelectorAll('#commTabs .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#commTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('[id^="ctab-"]').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('ctab-' + btn.dataset.ctab).classList.add('active');
+  });
+});
+
+function triggerAlert(type) {
+  const labels = { panic: 'Panic', security: 'Security', medical: 'Medical' };
+  const badges = { panic: 'danger', security: 'warning', medical: 'success' };
+  const now = new Date();
+  const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ' today';
+  const tbody = document.querySelector('#alertLog tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + time + '</td><td><span class="badge ' + badges[type] + '">' + labels[type] + '</span></td><td>Super Admin (Test)</td><td>Mogadishu MGQ</td><td>SA, City Admin, Security, 2 checkpoints</td><td>Dispatching nearest unit…</td><td><span class="badge warning">Active</span></td>';
+  tbody.insertBefore(tr, tbody.firstChild);
+  alert(labels[type] + ' alert sent to Mogadishu command center and nearest response units.');
+}
+
+buildNav();
+updateClock();
+setInterval(updateClock, 1000);
+
+</script>
+</body>
+</html>
