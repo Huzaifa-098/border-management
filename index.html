@@ -6,7 +6,8 @@
 <title>BMS — Border Management System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
 <style>
 :root{--bg:#eef2f7;--bg-card:#ffffff;--bg-hover:#f1f5f9;--sidebar:#ffffff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--accent:#0284c7;--accent-dim:rgba(2,132,199,.10);--teal:#0d9488;--success:#059669;--warning:#d97706;--danger:#dc2626;--purple:#7c3aed;--radius:12px;--shadow:0 6px 24px rgba(15,23,42,.08)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -213,7 +214,106 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 .kpi-card,.card-box,.feature-card,.detail-block,.chart-area{box-shadow:0 1px 3px rgba(15,23,42,.05)}
 .data-table tr:hover td{background:rgba(2,132,199,.05)}
 .hero-eyebrow{color:#7dd3fc;background:rgba(255,255,255,.14)}
-.hero-pill strong{color:#7dd3fc}
+
+/* ── Angular Material–style design system ── */
+:root{
+  --primary:#1976d2;--primary-dark:#1565c0;--primary-light:rgba(25,118,210,.12);
+  --accent:#ff4081;--warn:#f44336;--success:#2e7d32;--warning:#ed6c02;
+  --surface:#fff;--bg:#f5f5f5;--text:rgba(0,0,0,.87);--text-secondary:rgba(0,0,0,.6);
+  --divider:rgba(0,0,0,.12);--elevation-1:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);
+  --elevation-2:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+  --elevation-8:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);
+  --radius:4px;
+}
+body{font-family:Roboto,'Segoe UI',sans-serif;background:var(--bg);background-image:none;color:var(--text)}
+.sidebar{background:var(--surface);box-shadow:var(--elevation-2);border-right:none}
+.brand{border-bottom:1px solid var(--divider);background:var(--surface)}
+.brand-icon{border-radius:var(--radius);background:var(--primary);box-shadow:var(--elevation-2)}
+.brand-tag{background:var(--primary-light);color:var(--primary);border-radius:16px;padding:.2rem .6rem}
+.nav-item{border-radius:0 24px 24px 0;margin-right:.75rem;width:calc(100% - .75rem);text-transform:none;font-weight:400;letter-spacing:.01em}
+.nav-item:hover{background:rgba(0,0,0,.04);transform:none}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:500}
+.nav-item.active .nav-badge{background:rgba(25,118,210,.2);color:var(--primary)}
+.topbar{background:var(--primary);color:#fff;border-bottom:none;box-shadow:var(--elevation-2);height:64px}
+.topbar .breadcrumb,.topbar .breadcrumb span,.topbar-meta,.topbar-meta span{color:rgba(255,255,255,.95)}
+.topbar .breadcrumb .sep{color:rgba(255,255,255,.6)}
+.topbar .hamburger{border-color:rgba(255,255,255,.5);color:#fff}
+.user-pill{background:rgba(255,255,255,.15);color:#fff}
+.badge-live{background:rgba(255,255,255,.2);color:#fff}
+.content{padding:24px;background:var(--bg)}
+.card-box,.feature-card,.detail-block,.chart-area,.kpi-card{background:var(--surface);border:none;border-radius:var(--radius);box-shadow:var(--elevation-1)}
+.card-box h4{border-bottom:1px solid var(--divider);font-weight:500;color:var(--text)}
+.data-table th{background:#fafafa;color:var(--text-secondary);font-weight:500;text-transform:none;letter-spacing:.04em;font-size:13px}
+.data-table td{border-bottom:1px solid var(--divider)}
+.table-wrap{border:none;box-shadow:var(--elevation-1);border-radius:var(--radius)}
+.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border:none;box-shadow:var(--elevation-2);border-radius:var(--radius)}
+.hero-eyebrow{color:rgba(255,255,255,.9);background:rgba(255,255,255,.15);border-radius:16px}
+.hero-pill strong{color:#90caf9}
+.tab-btn{text-transform:uppercase;font-size:13px;letter-spacing:.08em}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+.toolbar .search-fake{border-radius:var(--radius);box-shadow:none;border:1px solid var(--divider);background:var(--surface)}
+.mat-icon{font-family:'Material Icons';font-size:20px;width:20px;height:20px;line-height:1;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;font-style:normal;font-weight:normal;letter-spacing:normal;text-transform:none;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';-webkit-font-smoothing:antialiased;overflow:hidden;flex-shrink:0}
+.mat-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:Roboto,sans-serif;font-size:14px;font-weight:500;letter-spacing:.0892857143em;text-transform:uppercase;border:none;border-radius:var(--radius);padding:0 16px;height:36px;cursor:pointer;transition:box-shadow .28s cubic-bezier(.4,0,.2,1),background .2s;white-space:nowrap}
+.mat-btn .mat-icon{text-transform:none;letter-spacing:normal;font-size:20px;overflow:hidden;max-width:20px}
+.mat-btn:disabled{opacity:.55;cursor:not-allowed}
+.mat-raised{box-shadow:var(--elevation-2);background:var(--primary);color:#fff}
+.mat-raised:hover:not(:disabled){box-shadow:var(--elevation-8);background:var(--primary-dark)}
+.mat-stroked{background:transparent;border:1px solid var(--divider);color:var(--primary)}
+.mat-stroked:hover:not(:disabled){background:var(--primary-light)}
+.mat-flat{background:transparent;color:var(--primary);box-shadow:none}
+.mat-flat:hover:not(:disabled){background:var(--primary-light)}
+.mat-warn.mat-raised{background:var(--warn)}
+.mat-warn.mat-raised:hover:not(:disabled){background:#d32f2f}
+.mat-accent.mat-raised{background:var(--accent)}
+.mat-sm{height:32px;font-size:13px;padding:0 12px}
+.mat-lg{height:44px;padding:0 20px}
+.topbar .mat-stroked{border-color:rgba(255,255,255,.6);color:#fff}
+.topbar .mat-stroked:hover{background:rgba(255,255,255,.12)}
+.topbar .mat-raised{background:#fff;color:var(--primary)}
+.mat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;border:none;background:var(--accent);color:#fff;box-shadow:var(--elevation-8);cursor:pointer;z-index:90;display:flex;align-items:center;justify-content:center}
+.mat-fab:hover{box-shadow:0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14)}
+.mat-fab .mat-icon{font-size:24px;width:24px;height:24px}
+.mat-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.32);opacity:0;visibility:hidden;transition:opacity .35s;z-index:1000}
+.mat-backdrop.show{opacity:1;visibility:visible}
+.mat-dialog-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1001;pointer-events:none;opacity:0;visibility:hidden}
+.mat-dialog-wrap.show{opacity:1;visibility:visible;pointer-events:auto}
+.mat-dialog{background:var(--surface);border-radius:var(--radius);box-shadow:var(--elevation-8);max-width:640px;width:100%;max-height:calc(100vh - 48px);display:flex;flex-direction:column;transform:scale(.92) translateY(12px);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.mat-dialog-wrap.show .mat-dialog{transform:scale(1) translateY(0)}
+.mat-dialog.mat-dialog-lg{max-width:800px}
+.mat-dialog-header{padding:20px 24px 8px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.mat-dialog-title{font-size:20px;font-weight:500;margin:0;line-height:1.3}
+.mat-dialog-subtitle{font-size:14px;color:var(--text-secondary);margin-top:4px}
+.mat-dialog-close{background:none;border:none;cursor:pointer;color:var(--text-secondary);padding:4px;border-radius:50%;display:flex}
+.mat-dialog-close:hover{background:rgba(0,0,0,.04)}
+.mat-dialog-body{padding:8px 24px 20px;overflow-y:auto;flex:1}
+.mat-dialog-actions{padding:8px 16px 16px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;border-top:1px solid var(--divider)}
+.mat-field{margin-bottom:16px}
+.mat-field label{display:block;font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
+.mat-field input,.mat-field select,.mat-field textarea{width:100%;padding:12px 14px;border:1px solid rgba(0,0,0,.38);border-radius:var(--radius);font-size:15px;font-family:Roboto;background:var(--surface);color:var(--text)}
+.mat-field input:focus,.mat-field select:focus,.mat-field textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 1px var(--primary)}
+.mat-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mat-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;font-size:13px;font-weight:500;background:var(--primary-light);color:var(--primary)}
+.mat-snackbar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#323232;color:#fff;padding:14px 20px;border-radius:var(--radius);box-shadow:var(--elevation-8);z-index:1100;transition:transform .35s cubic-bezier(.4,0,.2,1);font-size:14px;display:flex;align-items:center;gap:12px;max-width:90vw}
+.mat-snackbar.show{transform:translateX(-50%) translateY(0)}
+.mat-snackbar.success{background:#2e7d32}
+.mat-snackbar.warn{background:#ed6c02}
+.mat-snackbar.error{background:#c62828}
+.mat-snackbar-action{background:none;border:none;color:#90caf9;font-weight:500;cursor:pointer;margin-left:8px;text-transform:uppercase;font-size:13px}
+.mat-stepper{display:flex;gap:0;margin:16px 0 24px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--divider)}
+.mat-step{flex:1;padding:12px;text-align:center;font-size:12px;font-weight:500;background:#fafafa;color:var(--text-secondary);border-right:1px solid var(--divider)}
+.mat-step:last-child{border-right:none}
+.mat-step.active{background:var(--primary-light);color:var(--primary)}
+.mat-step.done{background:#e8f5e9;color:var(--success)}
+.mat-detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);font-size:14px}
+.mat-detail-row:last-child{border-bottom:none}
+.mat-detail-row span:first-child{color:var(--text-secondary)}
+.qr-preview{width:120px;height:120px;background:#fff;border:1px solid var(--divider);border-radius:var(--radius);display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:8px;margin:12px auto}
+.qr-preview i{background:#111;border-radius:1px;aspect-ratio:1}
+.scan-pulse{width:80px;height:80px;border-radius:50%;border:3px solid var(--primary);margin:16px auto;display:flex;align-items:center;justify-content:center;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(25,118,210,.4)}50%{box-shadow:0 0 0 12px rgba(25,118,210,0)}}
+@media(max-width:900px){.mat-row{grid-template-columns:1fr}.mat-fab{bottom:16px;right:16px}}
+
+.hero-pill strong{color:#90caf9}
 </style>
 </head>
 <body>
@@ -231,8 +331,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <h2 id="pageTitle">Dashboard</h2>
 </div>
 <div class="topbar-actions">
-<button class="btn btn-outline btn-sm" onclick="alert('Global search — demo')">🔍 Search</button>
-<button class="btn btn-primary btn-sm" onclick="alert('Export initiated — demo')">⬇ Export</button>
+<button class="mat-btn mat-stroked mat-sm" data-modal="search"><span class="mat-icon">search</span> Search</button>
+<button class="mat-btn mat-raised mat-primary mat-sm" data-modal="export"><span class="mat-icon">download</span> Export</button>
 </div>
 <div class="topbar-meta"><span class="badge-live">● System Online</span><span id="clock"></span><div class="user-pill"><div class="user-avatar">SA</div><span>Super Admin</span></div></div>
 </header>
@@ -240,7 +340,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel active" id="panel-dashboard">
 <div class="hero"><div class="hero-eyebrow">National Operations</div><h3>National Border Operations Dashboard</h3><p>Real-time overview of border crossings, traveler registrations, and vehicle movements across Somalia's checkpoints — Mogadishu, Hargeisa, Kismayo, and inter-city corridors.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>4,287</strong> Travelers Today</span><span class="hero-pill"><strong>17</strong> Flagged Items</span><span class="hero-pill"><strong>99.7%</strong> System Uptime</span><span class="hero-pill"><strong>12</strong> Active Cities</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search crossings, plates, permits…</div><button class="btn btn-outline btn-sm">Filter</button><button class="btn btn-outline btn-sm">Today</button><button class="btn btn-primary btn-sm">Refresh Data</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search crossings, plates, permits…</div><button class="mat-btn mat-stroked mat-sm">Filter</button><button class="mat-btn mat-stroked mat-sm">Today</button><button class="mat-btn mat-raised mat-primary mat-sm" data-action="refresh"><span class="mat-icon">refresh</span> Refresh</button></div>
 <div class="kpi-grid">
 <div class="kpi-card"><div class="kpi-icon">🧳</div><div class="kpi-body"><div class="kpi-label">Travelers Today</div><div class="kpi-value">4,287</div><div class="kpi-trend up">↑ 12% vs yesterday</div></div></div>
 <div class="kpi-card teal"><div class="kpi-icon">🚗</div><div class="kpi-body"><div class="kpi-label">Vehicles Registered</div><div class="kpi-value">1,842</div><div class="kpi-trend neutral">342 in transit</div></div></div>
@@ -286,7 +386,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-overview">
 <div class="hero"><div class="hero-eyebrow">Platform Architecture</div><h3>System Overview</h3><p>The Somalia Border Management System (BMS) is a unified national platform for secure passenger registration, vehicle tracking, biometric verification, and inter-agency coordination at all border and transit checkpoints.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>Central</strong> Biometric Registry</span><span class="hero-pill"><strong>48</strong> Checkpoints</span><span class="hero-pill"><strong>AES-256</strong> Encryption</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search documentation…</div><button class="btn btn-outline btn-sm">Architecture</button><button class="btn btn-outline btn-sm">Security</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search documentation…</div><button class="mat-btn mat-stroked mat-sm">Architecture</button><button class="mat-btn mat-stroked mat-sm">Security</button></div>
 <div class="two-col">
 <div><h4 class="section-title">System Objectives</h4><ul class="list-check">
 <li>Centralize all border crossing data across federal states and checkpoints</li>
@@ -342,7 +442,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-passenger">
 <div class="hero"><div class="hero-eyebrow">Traveler Management</div><h3>Passenger Registration</h3><p>Register and manage travelers entering or transiting through Somalia's borders. Supports biometric registration, biometric capture, travel history, and digital travel permit issuance with QR codes.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>48,210</strong> Total Registered</span><span class="hero-pill"><strong>142</strong> Pending Bio</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search by name, phone, reg. ID…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-outline btn-sm">Checkpoint</button><button class="btn btn-primary btn-sm">+ New Registration</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search by name, phone, reg. ID…</div><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-stroked mat-sm">Checkpoint</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="passenger"><span class="mat-icon">person_add</span> New Registration</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">📝</div><h4>New Registration</h4><p>Capture personal info, personal details, travel purpose, and destination.</p></div>
 <div class="feature-card"><div class="fc-icon">👆</div><h4>Biometric Capture</h4><p>Fingerprint and facial scan matched against the central biometric registry.</p></div>
@@ -382,7 +482,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-vehicle">
 <div class="hero"><div class="hero-eyebrow">Fleet Management</div><h3>Vehicle Management</h3><p>Register, verify, track, and manage all vehicles crossing borders and traveling between Somali cities. Linked to driver credentials, passenger assignments, and transit permits.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>1,842</strong> Registered</span><span class="hero-pill"><strong>342</strong> In Transit</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search plate, VIN, owner…</div><button class="btn btn-outline btn-sm">Type</button><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Register Vehicle</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search plate, VIN, owner…</div><button class="mat-btn mat-stroked mat-sm">Type</button><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="vehicle"><span class="mat-icon">directions_car</span> Register Vehicle</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">🚗</div><h4>Vehicle Registration</h4><p>Register plate, VIN, type, owner, and insurance details.</p></div>
 <div class="feature-card"><div class="fc-icon">✅</div><h4>Vehicle Verification</h4><p>Validate registration, insurance, and inspection certificates.</p></div>
@@ -409,7 +509,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-city-admin">
 <div class="hero"><div class="hero-eyebrow">City-Level Administration</div><h3>City Admin Portal</h3><p>City-level administration for Mogadishu, Hargeisa, Kismayo, Garowe, and Bosaso. Review applications, verify registrations, approve clearance, monitor activities, and forward cases to Super Admin.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>34</strong> Pending Reviews</span><span class="hero-pill"><strong>5</strong> Cities Active</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search applications, officers…</div><button class="btn btn-outline btn-sm">City: Mogadishu</button><button class="btn btn-outline btn-sm">Urgent</button><button class="btn btn-primary btn-sm">Review Queue</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search applications, officers…</div><button class="mat-btn mat-stroked mat-sm">City: Mogadishu</button><button class="mat-btn mat-stroked mat-sm">Urgent</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="reviewQueue"><span class="mat-icon">inbox</span> Review Queue</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">📥</div><h4>Review Applications</h4><p>Process flagged passenger, vehicle, and driver registrations.</p></div>
 <div class="feature-card"><div class="fc-icon">📄</div><h4>Verify Vehicle Papers</h4><p>Validate vehicle papers, driver licenses, and insurance.</p></div>
@@ -421,10 +521,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="two-col">
 <div class="card-box"><h4>Pending Review Queue — Mogadishu</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Ref</th><th>Type</th><th>Subject</th><th>Reason</th><th>Submitted</th><th>Action</th></tr></thead><tbody>
-<tr><td>RV-8821</td><td>Passenger</td><td>Abdirizak Jama Idle</td><td>Biometric mismatch</td><td>14:18 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
-<tr><td>RV-8820</td><td>Vehicle</td><td>SO-BS-1102</td><td>Expired insurance</td><td>13:45 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
-<tr><td>RV-8819</td><td>Passenger</td><td>Unknown — Duplicate FP</td><td>Possible identity fraud</td><td>12:30 today</td><td><button class="btn btn-primary btn-sm">Urgent</button></td></tr>
-<tr><td>RV-8818</td><td>Driver Card</td><td>Hassan M. Abdi</td><td>Address verification</td><td>11:15 today</td><td><button class="btn btn-outline btn-sm">Review</button></td></tr>
+<tr><td>RV-8821</td><td>Passenger</td><td>Abdirizak Jama Idle</td><td>Biometric mismatch</td><td>14:18 today</td><td><button class="mat-btn mat-stroked mat-sm" data-modal="review"><span class="mat-icon">visibility</span> Review</button></td></tr>
+<tr><td>RV-8820</td><td>Vehicle</td><td>SO-BS-1102</td><td>Expired insurance</td><td>13:45 today</td><td><button class="mat-btn mat-stroked mat-sm" data-modal="review"><span class="mat-icon">visibility</span> Review</button></td></tr>
+<tr><td>RV-8819</td><td>Passenger</td><td>Unknown — Duplicate FP</td><td>Possible identity fraud</td><td>12:30 today</td><td><button class="mat-btn mat-raised mat-warn mat-sm" data-modal="review"><span class="mat-icon">priority_high</span> Urgent</button></td></tr>
+<tr><td>RV-8818</td><td>Driver Card</td><td>Hassan M. Abdi</td><td>Address verification</td><td>11:15 today</td><td><button class="mat-btn mat-stroked mat-sm" data-modal="review"><span class="mat-icon">visibility</span> Review</button></td></tr>
 </tbody></table></div></div>
 <div class="card-box"><h4>Vehicle Paper Verification Log</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Doc ID</th><th>Type</th><th>Holder</th><th>Verified By</th><th>Result</th></tr></thead><tbody>
@@ -444,7 +544,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-super-admin">
 <div class="hero"><div class="hero-eyebrow">National Command</div><h3>Super Admin Portal</h3><p>National-level system administration — user management, approval management, security monitoring, database management, and platform health dashboards.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>248</strong> Active Users</span><span class="hero-pill"><strong>17</strong> Pending Approvals</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search users, configs, approvals…</div><button class="btn btn-outline btn-sm">Users</button><button class="btn btn-outline btn-sm">Security</button><button class="btn btn-primary btn-sm">System Config</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search users, configs, approvals…</div><button class="mat-btn mat-stroked mat-sm">Users</button><button class="mat-btn mat-stroked mat-sm">Security</button><button class="mat-btn mat-raised mat-primary mat-sm">System Config</button></div>
 <div class="kpi-grid">
 <div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-body"><div class="kpi-label">Active Users</div><div class="kpi-value">248</div><div class="kpi-trend neutral">Across 12 cities</div></div></div>
 <div class="kpi-card teal"><div class="kpi-icon">📋</div><div class="kpi-body"><div class="kpi-label">Pending Approvals</div><div class="kpi-value">17</div><div class="kpi-trend down">5 urgent</div></div></div>
@@ -454,10 +554,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="two-col">
 <div class="card-box"><h4>User Management</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>User</th><th>Role</th><th>City</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead><tbody>
-<tr><td>Officer Ahmed M.</td><td>Checkpoint Officer</td><td>Mogadishu</td><td>14:30 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
-<tr><td>Admin Fatima H.</td><td>City Admin</td><td>Hargeisa</td><td>13:45 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
-<tr><td>Officer Yusuf K.</td><td>Checkpoint Officer</td><td>Kismayo</td><td>2026-06-30</td><td><span class="badge warning">Suspended</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
-<tr><td>SysAdmin Omar A.</td><td>Super Admin</td><td>National</td><td>14:35 today</td><td><span class="badge success">Active</span></td><td><button class="btn btn-outline btn-sm">Edit</button></td></tr>
+<tr><td>Officer Ahmed M.</td><td>Checkpoint Officer</td><td>Mogadishu</td><td>14:30 today</td><td><span class="badge success">Active</span></td><td><button class="mat-btn mat-stroked mat-sm">Edit</button></td></tr>
+<tr><td>Admin Fatima H.</td><td>City Admin</td><td>Hargeisa</td><td>13:45 today</td><td><span class="badge success">Active</span></td><td><button class="mat-btn mat-stroked mat-sm">Edit</button></td></tr>
+<tr><td>Officer Yusuf K.</td><td>Checkpoint Officer</td><td>Kismayo</td><td>2026-06-30</td><td><span class="badge warning">Suspended</span></td><td><button class="mat-btn mat-stroked mat-sm">Edit</button></td></tr>
+<tr><td>SysAdmin Omar A.</td><td>Super Admin</td><td>National</td><td>14:35 today</td><td><span class="badge success">Active</span></td><td><button class="mat-btn mat-stroked mat-sm">Edit</button></td></tr>
 </tbody></table></div></div>
 <div class="card-box"><h4>Approval Management</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Request</th><th>Requester</th><th>Type</th><th>Priority</th><th>Status</th></tr></thead><tbody>
@@ -480,7 +580,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="stat-row"><span>Last backup</span><strong>Today 04:00 EAT</strong></div>
 <div class="stat-row"><span>Replication lag</span><strong>&lt; 2 sec</strong></div>
 <div class="stat-row"><span>Database sync status</span><strong style="color:var(--success)">Synced 14:30</strong></div>
-<button class="btn btn-outline btn-sm" style="margin-top:1rem">Run Manual Backup</button>
+<button class="mat-btn mat-stroked mat-sm" style="margin-top:1rem">Run Manual Backup</button>
 </div>
 </div>
 </div>
@@ -488,7 +588,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-biometric">
 <div class="hero"><div class="hero-eyebrow">Identity Verification</div><h3>Biometric Verification</h3><p>Fingerprint and facial recognition integration with central national biometric database. Identity verification, duplicate detection, and fraud prevention.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>Central</strong> Biometric Registry</span><span class="hero-pill"><strong>99.2%</strong> Match Rate</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search scan ID, subject…</div><button class="btn btn-outline btn-sm">Today</button><button class="btn btn-outline btn-sm">Duplicates</button><button class="btn btn-primary btn-sm">New Scan</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search scan ID, subject…</div><button class="mat-btn mat-stroked mat-sm">Today</button><button class="mat-btn mat-stroked mat-sm">Duplicates</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="biometric"><span class="mat-icon">fingerprint</span> New Scan</button></div>
 <div class="detail-grid">
 <div class="detail-block"><h5>Scans Today</h5><p class="val">2,841</p><p>Fingerprint + facial combined</p></div>
 <div class="detail-block"><h5>Verified</h5><p class="val">2,798</p><p>98.5% success rate</p></div>
@@ -496,8 +596,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 </div>
 <div class="two-col">
 <div>
-<div class="bio-scanner"><div class="scan-icon">👆</div><h4 style="margin-bottom:.5rem">Fingerprint Scanner</h4><p style="color:var(--muted);font-size:.85rem">Place finger on scanner. Matching against central biometric registry in real-time.</p><button class="btn btn-primary" style="margin-top:1rem">Start Scan</button></div>
-<div class="bio-scanner"><div class="scan-icon">📷</div><h4 style="margin-bottom:.5rem">Facial Recognition</h4><p style="color:var(--muted);font-size:.85rem">Live face capture with liveness detection and anti-spoofing enabled.</p><button class="btn btn-primary" style="margin-top:1rem;background:var(--teal);border-color:var(--teal)">Capture Face</button></div>
+<div class="bio-scanner"><div class="scan-icon">👆</div><h4 style="margin-bottom:.5rem">Fingerprint Scanner</h4><p style="color:var(--muted);font-size:.85rem">Place finger on scanner. Matching against central biometric registry in real-time.</p><button class="mat-btn mat-raised mat-primary" style="margin-top:1rem">Start Scan</button></div>
+<div class="bio-scanner"><div class="scan-icon">📷</div><h4 style="margin-bottom:.5rem">Facial Recognition</h4><p style="color:var(--muted);font-size:.85rem">Live face capture with liveness detection and anti-spoofing enabled.</p><button class="mat-btn mat-raised mat-primary" style="margin-top:1rem;background:var(--teal);border-color:var(--teal)">Capture Face</button></div>
 </div>
 <div class="card-box"><h4>Identity Verification &amp; Duplicate Detection</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Scan ID</th><th>Subject</th><th>Match Type</th><th>Confidence</th><th>Matched Record</th><th>Status</th></tr></thead><tbody>
@@ -513,7 +613,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-reporting">
 <div class="hero"><div class="hero-eyebrow">Analytics &amp; Compliance</div><h3>Reporting &amp; Analytics</h3><p>Generate comprehensive reports on daily travelers, vehicle movements, border activity, security incidents, and performance metrics across all federal states.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>24</strong> Report Types</span><span class="hero-pill"><strong>133K</strong> Monthly Crossings</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search reports…</div><button class="btn btn-outline btn-sm">Date Range</button><button class="btn btn-outline btn-sm">City</button><button class="btn btn-primary btn-sm">Generate Report</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search reports…</div><button class="mat-btn mat-stroked mat-sm">Date Range</button><button class="mat-btn mat-stroked mat-sm">City</button><button class="mat-btn mat-raised mat-primary mat-sm">Generate Report</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">🧳</div><h4>Daily Travelers Report</h4><p>Passenger counts by checkpoint, nationality, and travel purpose.</p></div>
 <div class="feature-card"><div class="fc-icon">🚛</div><h4>Vehicle Reports</h4><p>Registration, transit, and inspection status by type and city.</p></div>
@@ -538,7 +638,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-incident">
 <div class="hero"><div class="hero-eyebrow">Security Operations</div><h3>Incident &amp; Security</h3><p>Report and track suspicious passengers/vehicles, illegal activities, seized items, and security incidents. Integrated with emergency alerts and law enforcement.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>4</strong> Active Incidents</span><span class="hero-pill"><strong>255</strong> Resolved (YTD)</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search incidents…</div><button class="btn btn-outline btn-sm">Severity</button><button class="btn btn-outline btn-sm">Type</button><button class="btn btn-primary btn-sm">+ Report Incident</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search incidents…</div><button class="mat-btn mat-stroked mat-sm">Severity</button><button class="mat-btn mat-stroked mat-sm">Type</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="incident"><span class="mat-icon">report</span> Report Incident</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">🧑</div><h4>Suspicious Passengers</h4><p>Flag and investigate travelers with biometric or watchlist anomalies.</p></div>
 <div class="feature-card"><div class="fc-icon">🚗</div><h4>Suspicious Vehicles</h4><p>Report vehicles with concealed cargo, false plates, or inspection failures.</p></div>
@@ -554,7 +654,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <label>Description</label><textarea rows="3">Suspected false registration details presented by two individuals attempting entry via cargo lane. Registration details inconsistent with central database records.</textarea>
 <label>Reporting Officer</label><input type="text" value="Officer Ahmed K. — ID OFF-2841"/>
 <label>Photo Evidence</label><input type="text" value="📷 3 photos attached" readonly/>
-<button class="btn btn-primary" style="margin-top:.5rem">Submit Report</button>
+<button class="mat-btn mat-raised mat-primary" style="margin-top:.5rem" data-modal="incident"><span class="mat-icon">send</span> Submit Report</button>
 </div>
 <div class="card-box"><h4>Active &amp; Recent Incidents</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Type</th><th>Location</th><th>Photos</th><th>Severity</th><th>Status</th></tr></thead><tbody>
@@ -570,7 +670,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-notifications">
 <div class="hero"><div class="hero-eyebrow">Alert Delivery</div><h3>Notifications Center</h3><p>Multi-channel notification delivery via SMS, WhatsApp, and Email. Automatic alerts for trip approvals, vehicle status, and security events.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>16,490</strong> Sent Today</span><span class="hero-pill"><strong>98.2%</strong> Delivery Rate</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search notifications…</div><button class="btn btn-outline btn-sm">Channel</button><button class="btn btn-outline btn-sm">Status</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search notifications…</div><button class="mat-btn mat-stroked mat-sm">Channel</button><button class="mat-btn mat-stroked mat-sm">Status</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">📱</div><h4>SMS Gateway</h4><p>Hormuud &amp; Telesom integration. 12,400 sent today.</p></div>
 <div class="feature-card"><div class="fc-icon">💬</div><h4>WhatsApp Business</h4><p>Permit delivery and status updates. 3,200 sent today.</p></div>
@@ -601,7 +701,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-blacklist">
 <div class="hero"><div class="hero-eyebrow">Threat Management</div><h3>Blacklist &amp; Watchlist</h3><p>Manage driver and vehicle blacklists and watchlists. Real-time matching at all checkpoints prevents unauthorized crossings with instant alerts.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>47</strong> Blacklisted</span><span class="hero-pill"><strong>23</strong> Watchlist</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search blacklist, watchlist…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Add Entry</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search blacklist, watchlist…</div><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="blacklist"><span class="mat-icon">block</span> Add Entry</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">🚫</div><h4>Add to Blacklist</h4><p>Flag drivers or vehicles with reason, expiry, and approval authority.</p></div>
 <div class="feature-card"><div class="fc-icon">👁️</div><h4>Watchlist Monitoring</h4><p>Monitor persons of interest without blocking entry — alert on match.</p></div>
@@ -626,7 +726,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-driver-card">
 <div class="hero"><div class="hero-eyebrow">Driver Credentials</div><h3>Driver Card Management</h3><p>Issue, verify, and manage digital driver credentials — registration, license verification, QR codes, status management, travel history, trip logging, and card printing.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>8,420</strong> Active Cards</span><span class="hero-pill"><strong>47</strong> Suspended</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search driver, card ID, license…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">+ Issue Card</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search driver, card ID, license…</div><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-raised mat-primary mat-sm">+ Issue Card</button></div>
 <div class="card-grid">
 <div class="feature-card"><div class="fc-icon">🪪</div><h4>Driver Registration</h4><p>Register new drivers with license and biometric data.</p></div>
 <div class="feature-card"><div class="fc-icon">✅</div><h4>License Verification</h4><p>Validate driving license against national registry.</p></div>
@@ -662,7 +762,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-transit">
 <div class="hero"><div class="hero-eyebrow">Live GPS Tracking</div><h3>Vehicle Transit Tracking</h3><p>GPS-based real-time tracking of inter-city vehicle movements. Inter-city notification workflow alerts destination cities when vehicles enter corridor zones.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>342</strong> In Transit</span><span class="hero-pill"><strong>12</strong> Corridors Active</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search plate, route…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">Live Map</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search plate, route…</div><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-raised mat-primary mat-sm">Live Map</button></div>
 <div class="map-placeholder">
 <div class="map-routes">
 <div class="map-route active" style="top:32%;left:25%;width:28%;transform:rotate(25deg)"></div>
@@ -707,7 +807,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <button class="tab-btn" data-ctab="checkpoint">Inter-Checkpoint</button>
 </div>
 <div class="tab-panel active" id="ctab-msg">
-<div class="toolbar"><div class="search-fake">🔍 Search messages…</div><button class="btn btn-primary btn-sm">+ New Message</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search messages…</div><button class="mat-btn mat-raised mat-primary mat-sm">+ New Message</button></div>
 <div class="card-box"><h4>Internal Messages — Chat View</h4>
 <div class="chat-list">
 <div class="chat-msg"><div class="chat-avatar">AM</div><div class="chat-bubble"><div class="chat-meta"><span>Officer Ahmed (Mogadishu)</span><span>14:20</span></div><p>Urgent: Document fraud case INC-0412 — two individuals with false registration data at cargo lane. Requesting city admin support.</p></div></div>
@@ -718,7 +818,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 </div></div>
 <p style="font-size:.8rem;color:var(--muted);margin-top:.5rem">Features: End-to-end encrypted messaging, read receipts, file attachments, and priority flagging for urgent security communications.</p>
 </div>
-<div class="tab-panel" id="ctab-voice"><div class="toolbar"><button class="btn btn-primary btn-sm">📞 New Call</button></div><div class="card-box"><h4>Recent Voice Calls</h4>
+<div class="tab-panel" id="ctab-voice"><div class="toolbar"><button class="mat-btn mat-raised mat-primary mat-sm">📞 New Call</button></div><div class="card-box"><h4>Recent Voice Calls</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Caller</th><th>Recipient</th><th>Duration</th><th>Time</th><th>Status</th></tr></thead><tbody>
 <tr><td>Mogadishu Control Room</td><td>Kismayo Checkpoint</td><td>4:32</td><td>14:10</td><td><span class="badge success">Completed</span></td></tr>
 <tr><td>Hargeisa Admin</td><td>National Command</td><td>12:08</td><td>13:30</td><td><span class="badge success">Completed</span></td></tr>
@@ -726,20 +826,20 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <tr><td>Officer Ahmed M.</td><td>City Admin Mogadishu</td><td>—</td><td>14:25</td><td><span class="badge warning">Missed</span></td></tr>
 </tbody></table></div>
 <p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">VoIP integration with checkpoint terminals. Call recording enabled for audit compliance.</p></div></div>
-<div class="tab-panel" id="ctab-video"><div class="toolbar"><button class="btn btn-primary btn-sm">📹 Start Conference</button></div><div class="card-box"><h4>Video Conference Sessions</h4>
+<div class="tab-panel" id="ctab-video"><div class="toolbar"><button class="mat-btn mat-raised mat-primary mat-sm">📹 Start Conference</button></div><div class="card-box"><h4>Video Conference Sessions</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Session</th><th>Participants</th><th>Duration</th><th>Status</th></tr></thead><tbody>
 <tr><td>Daily Ops Briefing</td><td>5 City Admins + National</td><td>45 min</td><td><span class="badge success">Ended</span></td></tr>
 <tr><td>Incident Review INC-0412</td><td>Kismayo + Mogadishu teams</td><td>—</td><td><span class="badge info">Scheduled 15:00</span></td></tr>
 <tr><td>Security Protocol Update</td><td>All Southern Zone Officers</td><td>30 min</td><td><span class="badge success">Ended</span></td></tr>
 </tbody></table></div>
 <p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">HD video with screen sharing for incident review and multi-checkpoint coordination.</p></div></div>
-<div class="tab-panel" id="ctab-broadcast"><div class="toolbar"><button class="btn btn-primary btn-sm">📢 Send Broadcast</button></div><div class="card-box"><h4>Broadcast Messages</h4>
+<div class="tab-panel" id="ctab-broadcast"><div class="toolbar"><button class="mat-btn mat-raised mat-primary mat-sm">📢 Send Broadcast</button></div><div class="card-box"><h4>Broadcast Messages</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Priority</th><th>Message</th><th>Sent To</th><th>Time</th><th>Acknowledged</th></tr></thead><tbody>
 <tr><td><span class="badge danger">High</span></td><td>Increased security protocol at all southern checkpoints</td><td>All Officers — South Zone</td><td>11:00</td><td>89%</td></tr>
 <tr><td><span class="badge info">Normal</span></td><td>Central database sync completed successfully</td><td>All Checkpoints</td><td>08:30</td><td>100%</td></tr>
 <tr><td><span class="badge warning">Medium</span></td><td>New biometric scanner firmware available — schedule update</td><td>All City Admins</td><td>Yesterday</td><td>80%</td></tr>
 </tbody></table></div></div></div>
-<div class="tab-panel" id="ctab-checkpoint"><div class="toolbar"><button class="btn btn-primary btn-sm">+ New Coordination</button></div><div class="card-box"><h4>Inter-Checkpoint Coordination</h4>
+<div class="tab-panel" id="ctab-checkpoint"><div class="toolbar"><button class="mat-btn mat-raised mat-primary mat-sm">+ New Coordination</button></div><div class="card-box"><h4>Inter-Checkpoint Coordination</h4>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>From</th><th>To</th><th>Subject</th><th>Priority</th><th>Status</th></tr></thead><tbody>
 <tr><td>Mogadishu Checkpoint</td><td>Kismayo Checkpoint</td><td>Transfer: Passenger PR-04819 escort required</td><td><span class="badge warning">High</span></td><td><span class="badge warning">Pending</span></td></tr>
 <tr><td>Hargeisa Gate</td><td>Bosaso Corridor</td><td>Vehicle SO-HG-8834 pre-clearance approved</td><td><span class="badge info">Normal</span></td><td><span class="badge success">Acknowledged</span></td></tr>
@@ -752,9 +852,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="hero"><div class="hero-eyebrow">Crisis Response</div><h3>Emergency Alerts</h3><p>One-touch emergency alert system for checkpoint officers. Alerts broadcast to Super Admin, City Admin, security agencies, nearby checkpoints, and local authorities.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>3</strong> Alerts Today</span><span class="hero-pill"><strong>&lt;30s</strong> Response Time</span></div></div>
 <div class="alert-btns">
-<button class="alert-btn panic" onclick="triggerAlert('panic')">🚨 PANIC ALERT</button>
-<button class="alert-btn security" onclick="triggerAlert('security')">⚠️ SECURITY ALERT</button>
-<button class="alert-btn medical" onclick="triggerAlert('medical')">🏥 MEDICAL ALERT</button>
+<button class="alert-btn panic" data-modal="emergency" data-alert-type="panic">🚨 PANIC ALERT</button>
+<button class="alert-btn security" data-modal="emergency" data-alert-type="security">⚠️ SECURITY ALERT</button>
+<button class="alert-btn medical" data-modal="emergency" data-alert-type="medical">🏥 MEDICAL ALERT</button>
 </div>
 <div class="detail-grid">
 <div class="detail-block"><h5>Super Admin</h5><p>National command center notified instantly with full incident context.</p></div>
@@ -775,7 +875,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <div class="panel" id="panel-permit">
 <div class="hero"><div class="hero-eyebrow">Digital Clearance</div><h3>Digital Travel Permit</h3><p>Issue and verify digital travel permits with embedded QR codes. All fields captured: permit ID, passenger info, destination, purpose, issue/expiry dates, and verification status.</p>
 <div class="hero-pills"><span class="hero-pill"><strong>48,210</strong> Issued (YTD)</span><span class="hero-pill"><strong>4,287</strong> Active Today</span></div></div>
-<div class="toolbar"><div class="search-fake">🔍 Search permit ID, name…</div><button class="btn btn-outline btn-sm">Status</button><button class="btn btn-primary btn-sm">Verify QR</button></div>
+<div class="toolbar"><div class="search-fake">🔍 Search permit ID, name…</div><button class="mat-btn mat-stroked mat-sm">Status</button><button class="mat-btn mat-raised mat-primary mat-sm" data-modal="verifyQr"><span class="mat-icon">qr_code_scanner</span> Verify QR</button></div>
 <div class="two-col">
 <div class="id-card" style="border-color:var(--teal);max-width:400px"><div class="id-stripe"></div><div class="id-body">
 <div class="id-card-header"><span class="flag">🇸🇴 DIGITAL TRAVEL PERMIT</span><span class="badge success">VALID</span></div>
@@ -859,6 +959,21 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:var(--b
 <!-- PANELS END -->
 </main>
 </div>
+
+<button class="mat-fab" id="quickFab" title="Quick actions" data-modal="quickActions"><span class="mat-icon">add</span></button>
+<div class="mat-backdrop" id="modalBackdrop"></div>
+<div class="mat-dialog-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="mat-dialog" id="modalDialog">
+    <div class="mat-dialog-header">
+      <div><h2 class="mat-dialog-title" id="modalTitle"></h2><p class="mat-dialog-subtitle" id="modalSubtitle"></p></div>
+      <button class="mat-dialog-close" id="modalClose" aria-label="Close"><span class="mat-icon">close</span></button>
+    </div>
+    <div class="mat-dialog-body" id="modalBody"></div>
+    <div class="mat-dialog-actions" id="modalActions"></div>
+  </div>
+</div>
+<div class="mat-snackbar" id="snackbar"><span id="snackbarText"></span><button class="mat-snackbar-action" id="snackbarAction" style="display:none">Dismiss</button></div>
+
 <script>
 const NAV = [
   { group: 'Overview', items: [
@@ -972,6 +1087,219 @@ document.getElementById('hamburger').addEventListener('click', () => {
 });
 document.getElementById('overlay').addEventListener('click', closeSidebar);
 
+// ── Modal & Snackbar (Angular-style) ──
+const CITIES = ['Mogadishu','Hargeisa','Kismayo','Garowe','Bosaso','Afgooye'];
+const CHECKPOINTS = ['Mogadishu Afgooye','Hargeisa Gate','Kismayo Checkpoint','Garowe Hub','Bosaso Corridor'];
+
+function snackbar(msg, type = '', duration = 3500) {
+  const el = document.getElementById('snackbar');
+  const txt = document.getElementById('snackbarText');
+  txt.textContent = msg;
+  el.className = 'mat-snackbar show' + (type ? ' ' + type : '');
+  clearTimeout(snackbar._t);
+  snackbar._t = setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function closeModal() {
+  document.getElementById('modalWrap').classList.remove('show');
+  document.getElementById('modalBackdrop').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function openModal(title, bodyHtml, actionsHtml, subtitle = '', large = false) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSubtitle').textContent = subtitle;
+  document.getElementById('modalSubtitle').style.display = subtitle ? 'block' : 'none';
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  document.getElementById('modalActions').innerHTML = actionsHtml || '';
+  const dlg = document.getElementById('modalDialog');
+  dlg.classList.toggle('mat-dialog-lg', large);
+  document.getElementById('modalWrap').classList.add('show');
+  document.getElementById('modalBackdrop').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function field(label, id, type = 'text', opts = '') {
+  if (type === 'select') {
+    return '<div class="mat-field"><label>' + label + '</label><select id="' + id + '">' + opts + '</select></div>';
+  }
+  if (type === 'textarea') {
+    return '<div class="mat-field"><label>' + label + '</label><textarea id="' + id + '" rows="3"></textarea></div>';
+  }
+  return '<div class="mat-field"><label>' + label + '</label><input type="' + type + '" id="' + id + '" ' + opts + '/></div>';
+}
+
+function cityOptions(selected) {
+  return CITIES.map(c => '<option' + (c === selected ? ' selected' : '') + '>' + c + '</option>').join('');
+}
+
+const MODALS = {
+  passenger() {
+    openModal('New Passenger Registration', 
+      '<div class="mat-stepper"><div class="mat-step active">Personal</div><div class="mat-step">Travel</div><div class="mat-step">Biometric</div></div>' +
+      '<div class="mat-row">' + field('Full Name', 'mName', 'text', 'placeholder="Enter full name"') +
+      field('Phone Number', 'mPhone', 'tel', 'placeholder="+252 6X XXX XXXX"') + '</div>' +
+      '<div class="mat-row">' + field('Date of Birth', 'mDob', 'date') +
+      field('Gender', 'mGender', 'select', '<option>Male</option><option>Female</option>') + '</div>' +
+      '<div class="mat-row">' + field('Origin City', 'mOrigin', 'select', cityOptions('Hargeisa')) +
+      field('Destination City', 'mDest', 'select', cityOptions('Mogadishu')) + '</div>' +
+      field('Travel Purpose', 'mPurpose', 'select', '<option>Family Visit</option><option>Business</option><option>Medical</option><option>Education</option><option>Transit</option>') +
+      '<p style="font-size:13px;color:var(--text-secondary);margin-top:8px"><span class="mat-icon" style="font-size:16px;vertical-align:middle">info</span> No passport required — biometric capture at checkpoint.</p>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-primary" id="modalSubmitPassenger"><span class="mat-icon">save</span> Register &amp; Capture Bio</button>',
+      'Checkpoint officer registration form');
+    document.getElementById('modalSubmitPassenger').onclick = () => {
+      closeModal();
+      snackbar('Passenger registered — PR-' + Date.now().toString().slice(-6) + ' pending biometric', 'success');
+    };
+  },
+  vehicle() {
+    openModal('Register Vehicle',
+      '<div class="mat-row">' + field('Plate Number', 'vPlate', 'text', 'placeholder="SO-MG-0000"') +
+      field('Vehicle Type', 'vType', 'select', '<option>Bus</option><option>Minibus</option><option>Truck</option><option>Private Car</option>') + '</div>' +
+      '<div class="mat-row">' + field('Owner / Company', 'vOwner', 'text') + field('Driver Name', 'vDriver', 'text') + '</div>' +
+      '<div class="mat-row">' + field('Route Origin', 'vFrom', 'select', cityOptions('Mogadishu')) +
+      field('Route Destination', 'vTo', 'select', cityOptions('Kismayo')) + '</div>' +
+      field('Passenger Capacity', 'vCap', 'number', 'value="45" min="1"'),
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-primary" id="modalSubmitVehicle"><span class="mat-icon">check_circle</span> Register Vehicle</button>',
+      'Link driver card and transit permit');
+    document.getElementById('modalSubmitVehicle').onclick = () => {
+      closeModal();
+      snackbar('Vehicle registered and sent to verification queue', 'success');
+    };
+  },
+  verifyQr() {
+    const qr = Array.from({length:36}, (_,i) => '<i style="opacity:' + (Math.random()>.35?1:.15) + '"></i>').join('');
+    openModal('Verify Travel Permit QR',
+      '<div style="text-align:center"><div class="scan-pulse"><span class="mat-icon" style="font-size:40px;color:var(--primary)">qr_code_scanner</span></div>' +
+      '<p style="color:var(--text-secondary);margin-bottom:12px">Scan QR code or enter permit ID</p>' +
+      field('Permit ID', 'qrId', 'text', 'value="DTP-2026-04821"') +
+      '<div class="qr-preview">' + qr + '</div>' +
+      '<div class="mat-detail-row"><span>Passenger</span><strong>Fadumo Abdi Ali</strong></div>' +
+      '<div class="mat-detail-row"><span>Route</span><strong>Hargeisa → Mogadishu</strong></div>' +
+      '<div class="mat-detail-row"><span>Status</span><span class="mat-chip" style="background:#e8f5e9;color:#2e7d32">Valid</span></div></div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Close</button><button class="mat-btn mat-raised mat-primary" id="modalVerifyOk"><span class="mat-icon">verified</span> Confirm Clearance</button>');
+    document.getElementById('modalVerifyOk').onclick = () => {
+      closeModal();
+      snackbar('Permit DTP-2026-04821 verified — passenger cleared', 'success');
+    };
+  },
+  incident() {
+    openModal('Report Security Incident',
+      field('Incident Type', 'iType', 'select', '<option>Registration Fraud</option><option>Suspicious Vehicle</option><option>Unauthorized Crossing</option><option>Seized Items</option>') +
+      field('Checkpoint', 'iLoc', 'select', CHECKPOINTS.map(c=>'<option>'+c+'</option>').join('')) +
+      field('Severity', 'iSev', 'select', '<option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option>') +
+      field('Description', 'iDesc', 'textarea') +
+      '<div class="mat-field"><label>Photo Evidence</label><button class="mat-btn mat-stroked mat-sm" type="button"><span class="mat-icon">photo_camera</span> Attach Photos</button></div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-warn" id="modalSubmitIncident"><span class="mat-icon">send</span> Submit Report</button>',
+      'Incident forwarded to city admin and security');
+    document.getElementById('modalSubmitIncident').onclick = () => {
+      closeModal();
+      snackbar('Incident INC-' + Date.now().toString().slice(-4) + ' submitted', 'warn');
+    };
+  },
+  blacklist() {
+    openModal('Add Blacklist Entry',
+      field('Type', 'blType', 'select', '<option>Driver</option><option>Vehicle</option>') +
+      field('Name / Plate', 'blName', 'text') + field('Reason', 'blReason', 'text') +
+      field('Duration', 'blDur', 'select', '<option>Permanent</option><option>6 months</option><option>1 year</option>'),
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-warn" id="modalSubmitBl"><span class="mat-icon">block</span> Add to Blacklist</button>');
+    document.getElementById('modalSubmitBl').onclick = () => {
+      closeModal();
+      snackbar('Entry added to blacklist — all checkpoints notified', 'warn');
+    };
+  },
+  review() {
+    openModal('Review Application',
+      '<div class="mat-detail-row"><span>Reference</span><strong>RV-8821</strong></div>' +
+      '<div class="mat-detail-row"><span>Type</span><strong>Passenger</strong></div>' +
+      '<div class="mat-detail-row"><span>Subject</span><strong>Abdirizak Jama Idle</strong></div>' +
+      '<div class="mat-detail-row"><span>Reason</span><strong>Biometric mismatch</strong></div>' +
+      '<div class="mat-detail-row"><span>Submitted</span><strong>Today 14:18</strong></div>' +
+      '<p style="margin-top:16px;font-size:14px;color:var(--text-secondary)">City admin can approve, reject, or forward to Super Admin.</p>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Close</button><button class="mat-btn mat-raised mat-warn" id="modalReject"><span class="mat-icon">close</span> Reject</button><button class="mat-btn mat-raised mat-primary" id="modalApprove"><span class="mat-icon">check</span> Approve</button>',
+      'RV-8821 — Mogadishu queue');
+    document.getElementById('modalApprove').onclick = () => { closeModal(); snackbar('Application approved', 'success'); };
+    document.getElementById('modalReject').onclick = () => { closeModal(); snackbar('Application rejected', 'error'); };
+  },
+  reviewQueue() {
+    openModal('Pending Review Queue',
+      '<div class="table-wrap" style="max-height:280px"><table class="data-table"><thead><tr><th>Ref</th><th>Type</th><th>Subject</th><th>Action</th></tr></thead><tbody>' +
+      '<tr><td>RV-8821</td><td>Passenger</td><td>Abdirizak Jama Idle</td><td><button class="mat-btn mat-stroked mat-sm" onclick="closeModal();MODALS.review()">Open</button></td></tr>' +
+      '<tr><td>RV-8820</td><td>Vehicle</td><td>SO-BS-1102</td><td><button class="mat-btn mat-stroked mat-sm" onclick="closeModal();MODALS.review()">Open</button></td></tr>' +
+      '<tr><td>RV-8819</td><td>Passenger</td><td>Duplicate FP</td><td><button class="mat-btn mat-raised mat-warn mat-sm" onclick="closeModal();MODALS.review()">Urgent</button></td></tr></tbody></table></div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Close</button>', '34 items pending — Mogadishu', true);
+  },
+  biometric() {
+    openModal('Biometric Capture',
+      '<div style="text-align:center;padding:12px 0"><div class="scan-pulse"><span class="mat-icon" style="font-size:48px;color:var(--primary)">fingerprint</span></div>' +
+      '<p style="margin:16px 0;color:var(--text-secondary)">Place finger on scanner or position face in frame</p>' +
+      '<div class="mat-stepper"><div class="mat-step done">Fingerprint</div><div class="mat-step active">Facial</div><div class="mat-step">Match</div></div></div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-primary" id="modalBioRun"><span class="mat-icon">play_arrow</span> Start Scan</button>');
+    document.getElementById('modalBioRun').onclick = () => {
+      closeModal();
+      snackbar('Biometric verified — 99.1% match confidence', 'success');
+    };
+  },
+  search() {
+    openModal('Global Search', field('Search', 'gSearch', 'text', 'placeholder="Name, phone, plate, permit ID…" autofocus') +
+      '<p style="font-size:13px;color:var(--text-secondary)">Search across passengers, vehicles, permits, and incidents.</p>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-primary" id="modalSearchRun"><span class="mat-icon">search</span> Search</button>');
+    document.getElementById('modalSearchRun').onclick = () => {
+      closeModal();
+      snackbar('12 results found', 'success');
+    };
+  },
+  export() {
+    openModal('Export Data',
+      field('Report Type', 'exType', 'select', '<option>Crossings Summary</option><option>Passenger Registrations</option><option>Vehicle Transit</option><option>Incidents</option>') +
+      field('Date Range', 'exRange', 'select', '<option>Today</option><option>Last 7 days</option><option>This month</option><option>Custom</option>') +
+      field('Format', 'exFmt', 'select', '<option>PDF</option><option>Excel (.xlsx)</option><option>CSV</option>'),
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-primary" id="modalExportRun"><span class="mat-icon">download</span> Export</button>');
+    document.getElementById('modalExportRun').onclick = () => {
+      closeModal();
+      snackbar('Export started — download will begin shortly', 'success');
+    };
+  },
+  emergency(e) {
+    const type = e && e.getAttribute ? e.getAttribute('data-alert-type') : (e || 'panic');
+    const labels = { panic: 'Panic Alert', security: 'Security Alert', medical: 'Medical Alert' };
+    openModal('Confirm ' + labels[type],
+      '<p style="font-size:15px;line-height:1.6">This will immediately notify Super Admin, City Admin, nearby checkpoints, and response units.</p>' +
+      '<div class="mat-chip" style="background:#ffebee;color:#c62828;margin-top:12px"><span class="mat-icon" style="font-size:16px">warning</span> Use only for genuine emergencies</div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Cancel</button><button class="mat-btn mat-raised mat-warn" id="modalEmergencySend"><span class="mat-icon">notifications_active</span> Send Alert</button>');
+    document.getElementById('modalEmergencySend').onclick = () => {
+      closeModal();
+      triggerAlert(type);
+    };
+  },
+  quickActions() {
+    openModal('Quick Actions',
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
+      ['passenger:person_add:New Passenger','vehicle:directions_car:Register Vehicle','verifyQr:qr_code_scanner:Verify QR','incident:report:Report Incident','biometric:fingerprint:Biometric Scan','blacklist:block:Blacklist Entry'].map(s => {
+        const [k,ic,lb] = s.split(':');
+        return '<button class="mat-btn mat-stroked" style="width:100%;justify-content:flex-start" onclick="closeModal();MODALS.'+k+'()"><span class="mat-icon">'+ic+'</span> '+lb+'</button>';
+      }).join('') + '</div>',
+      '<button class="mat-btn mat-stroked" onclick="closeModal()">Close</button>');
+  }
+};
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+document.addEventListener('click', e => {
+  const modalBtn = e.target.closest('[data-modal]');
+  if (modalBtn) {
+    const key = modalBtn.getAttribute('data-modal');
+    if (key === 'emergency') MODALS.emergency(modalBtn);
+    else if (MODALS[key]) MODALS[key]();
+    return;
+  }
+  if (e.target.closest('[data-action="refresh"]')) {
+    snackbar('Dashboard data refreshed', 'success');
+  }
+});
+
 document.querySelectorAll('#commTabs .tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#commTabs .tab-btn').forEach(b => b.classList.remove('active'));
@@ -990,7 +1318,7 @@ function triggerAlert(type) {
   const tr = document.createElement('tr');
   tr.innerHTML = '<td>' + time + '</td><td><span class="badge ' + badges[type] + '">' + labels[type] + '</span></td><td>Super Admin (Test)</td><td>Mogadishu Checkpoint</td><td>SA, City Admin, Security, 2 checkpoints</td><td>Dispatching nearest unit…</td><td><span class="badge warning">Active</span></td>';
   tbody.insertBefore(tr, tbody.firstChild);
-  alert(labels[type] + ' alert sent to Mogadishu command center and nearest response units.');
+  snackbar(labels[type] + ' alert sent to Mogadishu command center and nearest response units.', 'warn');
 }
 
 buildNav();
