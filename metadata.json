@@ -1,0 +1,8 @@
+{
+  "name": "Puntland Border Control",
+  "description": "A comprehensive border management system featuring role-based dashboards for Travelers, City Admins, and Super Admins, integrated with an AI assistant.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
